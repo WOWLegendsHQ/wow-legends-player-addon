@@ -2,7 +2,7 @@
 
 In-game player toolkit for **[WoW Legends](https://wow-legends.eu)** (WotLK 3.3.5a / AzerothCore). Build and command a party of AI bots, set their roles, run dungeons, tune your own XP rate, manage your personal Companion and opt into Hardcore — every command one click away, with input fields and dropdowns right next to it.
 
-The installable addon lives in **[`WoWLegendsPlayer/`](WoWLegendsPlayer/)**. The repo root also holds the authoritative command reference ([`PLAYER_COMMANDS.md`](PLAYER_COMMANDS.md)). It shares its look and feel with the **[GM addon](https://github.com/WOWLegendsHQ)** — same left menu + top tabs, same widgets and colours.
+The installable addon lives in **[`WoWLegendsPlayer/`](WoWLegendsPlayer/)**. It shares its look and feel with the **[GM addon](https://github.com/WOWLegendsHQ)** — same left menu + top tabs, same widgets and colours.
 
 > The addon only ever *sends your own commands*. It needs **no special permissions** and never elevates anything.
 
@@ -59,7 +59,7 @@ A coloured pip on each row shows the kind of command: cyan = your command (`.`),
 
 ## Developer notes
 
-- Panels are authored from [`PLAYER_COMMANDS.md`](PLAYER_COMMANDS.md), the source-verified player command reference (GM-only commands are intentionally excluded).
+- Panels cover the player and bot commands only — GM-only commands are intentionally excluded.
 - Built on the stock 3.3.5a UI API — no external libraries. Shares its widget set and palette with the GM addon so both panels feel like one product.
 
 ## Credits

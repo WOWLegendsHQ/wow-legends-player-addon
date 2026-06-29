@@ -18,3 +18,6 @@ luac.out
 # Local-only notes
 scratch/
 *.local
+
+# Local build reference (kept on disk, not published)
+PLAYER_COMMANDS.md
