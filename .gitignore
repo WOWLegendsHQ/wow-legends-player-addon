@@ -1,0 +1,20 @@
+# OS clutter
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors / IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.bak
+
+# Build / release artifacts
+*.zip
+luac.out
+
+# Local-only notes
+scratch/
+*.local

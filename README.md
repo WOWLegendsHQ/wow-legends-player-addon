@@ -1,6 +1,6 @@
 # WoW Legends — Player Addon
 
-In-game player toolkit for **[WoW Legends](https://wow-legends.eu)** (WotLK 3.3.5a / AzerothCore). Build and command a party of AI bots, set their roles, run dungeons, tune your own XP rate, manage your personal Companion and opt into Hardcore — every command one click away, with input fields right next to it.
+In-game player toolkit for **[WoW Legends](https://wow-legends.eu)** (WotLK 3.3.5a / AzerothCore). Build and command a party of AI bots, set their roles, run dungeons, tune your own XP rate, manage your personal Companion and opt into Hardcore — every command one click away, with input fields and dropdowns right next to it.
 
 The installable addon lives in **[`WoWLegendsPlayer/`](WoWLegendsPlayer/)**. The repo root also holds the authoritative command reference ([`PLAYER_COMMANDS.md`](PLAYER_COMMANDS.md)). It shares its look and feel with the **[GM addon](https://github.com/WOWLegendsHQ)** — same left menu + top tabs, same widgets and colours.
 
@@ -29,7 +29,7 @@ A plain (no-`$`) whisper to a bot is **AI chat** — the bot talks back in chara
 
 ## Tabs (left menu)
 
-- **★ Companion** — your ONE permanent battle-companion: status, summon/dismiss/forget, and a faction-aware create form (race · class · name).
+- **★ Companion** — your ONE permanent battle-companion: status, summon/dismiss/forget, and a faction-aware Create row with race and class dropdowns and a name field.
 - **Bots** — the PlayerBot command center, with top tabs:
   - **Party** — build your party (`.playerbots bot addclass / add / addaccount / login / remove`), re-gear (`init=auto`) and account-linking.
   - **Roles** — set tank/heal/dps by switching spec (`$talents spec …`), with a spec→role reference.
@@ -51,7 +51,7 @@ A plain (no-`$`) whisper to a bot is **AI chat** — the bot talks back in chara
 | **Right-click** | Pin / unpin to **Favorites** |
 | **Shift-drag** the minimap button | Move the launcher |
 
-A coloured pip on each row shows the kind of command: <span>cyan</span> = your command (`.`), tan = a bot order (`$`), orange ★ = a WoW Legends exclusive (Companion / XP / Hardcore). Destructive actions (remove all bots, forget companion, Mak'gora, Hardcore) ask for confirmation first; Hardcore gets its own permadeath warning. The header shows your current **target**, since several actions fall back to it when a name field is blank.
+A coloured pip on each row shows the kind of command: cyan = your command (`.`), tan = a bot order (`$`), orange ★ = a WoW Legends exclusive (Companion / XP / Hardcore). Destructive actions (remove all bots, forget companion, Mak'gora, Hardcore) ask for confirmation first; Hardcore gets its own permadeath warning. The header shows your current **target**, since several actions fall back to it when a name field is blank.
 
 ## Slash commands
 
