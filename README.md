@@ -1,10 +1,18 @@
 # WoW Legends — Player Addon
 
-In-game player toolkit for **[WoW Legends](https://wow-legends.eu)** (WotLK 3.3.5a / AzerothCore). Build and command a party of AI bots, set their roles, run dungeons, tune your own XP rate, manage your personal Companion and opt into Hardcore — every command one click away, with input fields and dropdowns right next to it.
+In-game player toolkit for **[WoW Legends](https://wow-legends.eu/)** (WotLK 3.3.5a / AzerothCore). Build and command a party of AI bots, set their roles, run dungeons, tune your own XP rate, manage your personal Companion and opt into Hardcore — every command one click away, with input fields and dropdowns right next to it.
+
+**Made for the [WoW Legends](https://wow-legends.eu/) repack** — the free WotLK 3.3.5a / AzerothCore server you run yourself. Get the repack at **https://wow-legends.eu/**.
 
 The installable addon lives in **[`WoWLegendsPlayer/`](WoWLegendsPlayer/)**. It shares its look and feel with the **[GM addon](https://github.com/WOWLegendsHQ)** — same left menu + top tabs, same widgets and colours.
 
 > The addon only ever *sends your own commands*. It needs **no special permissions** and never elevates anything.
+
+## Screenshots
+
+![The Companion tab — your one permanent battle companion, created with race and class dropdowns](pl_companion.jpg)
+
+![The Bots tab — build and command your bot party (Party / Roles / Combat / Items / Dungeon)](pl_bots.jpg)
 
 ## Install
 
