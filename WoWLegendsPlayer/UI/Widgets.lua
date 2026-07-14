@@ -330,11 +330,13 @@ function WLP.LayoutRows(parent, defs, opts)
     local colWidth = opts.columnWidth or 430
     local rowsPerColumn = opts.rowsPerColumn
     local col, count = 0, 0
+    local rowTopMin = startY   -- top of the lowest row placed (most negative)
 
     for _, def in ipairs(defs) do
         local row = WLP.CreateCommandRow(parent, def)
         row:SetPoint("TOPLEFT", parent, "TOPLEFT", x + col * colWidth, y)
         row:SetWidth(colWidth - 16)
+        if y < rowTopMin then rowTopMin = y end
         y = y - (ROW_HEIGHT + ROW_SPACING)
         count = count + 1
         if rowsPerColumn and count % rowsPerColumn == 0 then
@@ -342,7 +344,11 @@ function WLP.LayoutRows(parent, defs, opts)
             y = startY
         end
     end
-    return -y + 8
+    -- Height runs to the bottom of the LOWEST row, not the post-loop cursor:
+    -- when #rows is an exact multiple of rowsPerColumn the loop resets y to the
+    -- top, which would otherwise report a header-only height and overlap the
+    -- next section.
+    return -(rowTopMin - ROW_HEIGHT) + 8
 end
 
 -- ─── Sub-tab strip (the "top tabs" within a left-rail tab) ─────────────────
@@ -455,17 +461,34 @@ function WLP.MakeScopeSelector(parent)
 end
 
 -- ─── Scrollable content holder (with mouse-wheel) ──────────────────────────
+-- UIPanelScrollFrameTemplate finds its scrollbar + up/down arrows via
+-- _G[name .. "ScrollBar"], so the ScrollFrame needs a UNIQUE global NAME or the
+-- thumb and arrows never work (a nil name left only the mouse wheel scrolling).
+-- The prefix is addon-specific ("WLP_Scroll") so it can't collide with the GM
+-- addon's frames, which are loaded at the same time.
+local scrollSeq = 0
 function WLP.CreateScrollContent(parent)
-    local scroll = CreateFrame("ScrollFrame", nil, parent, "UIPanelScrollFrameTemplate")
+    scrollSeq = scrollSeq + 1
+    local scroll = CreateFrame("ScrollFrame", "WLP_Scroll" .. scrollSeq, parent, "UIPanelScrollFrameTemplate")
     scroll:SetPoint("TOPLEFT", parent, "TOPLEFT", 4, -4)
     scroll:SetPoint("BOTTOMRIGHT", parent, "BOTTOMRIGHT", -28, 4)
+
+    local bar = _G[scroll:GetName() .. "ScrollBar"]
+
     scroll:EnableMouseWheel(true)
     scroll:SetScript("OnMouseWheel", function(self, delta)
-        local cur = self:GetVerticalScroll()
-        local max = self:GetVerticalScrollRange()
-        local target = cur - delta * (ROW_HEIGHT * 2)
-        if target < 0 then target = 0 elseif target > max then target = max end
-        self:SetVerticalScroll(target)
+        if bar then
+            bar:SetValue(bar:GetValue() - delta * (ROW_HEIGHT * 2))
+        else
+            local t = self:GetVerticalScroll() - delta * (ROW_HEIGHT * 2)
+            self:SetVerticalScroll(t < 0 and 0 or t)
+        end
+    end)
+
+    -- Content is built while the tab is hidden, so recompute the scroll range on
+    -- show; otherwise the bar can't tell that the content overflows.
+    scroll:SetScript("OnShow", function(self)
+        if ScrollFrame_OnScrollRangeChanged then ScrollFrame_OnScrollRangeChanged(self) end
     end)
 
     local content = CreateFrame("Frame", nil, scroll)
