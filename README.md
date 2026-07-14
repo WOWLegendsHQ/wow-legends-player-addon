@@ -28,7 +28,8 @@ It shares its look and feel with the **[GM addon](https://github.com/WOWLegendsH
 ## Highlights
 
 - **★ Companion** — your ONE permanent battle companion that fights at your side, chats, and remembers you. Create it with race and class dropdowns, then drive it like any bot.
-- **PlayerBot command center** — build a party (`.playerbots`), then command your bots with one-click `$` orders (movement, combat, roles/specs, gear, loot) through a **Party / Whisper** scope switch, plus a guided **Dungeon** run flow.
+- **PlayerBot command center** — build a party (`.playerbots`), then command your bots with one-click `$` orders (movement, combat, roles/specs, gear, loot) through a **Party / Whisper** scope switch, plus a guided **Dungeon** run flow and a **Speak** guide to the plain-English orders.
+- **Dungeon Clear** *(repack v1.4.0)* — let a tank bot run the whole dungeon while you play along: start / stop / pause / skip, a pull-mode picker, boss roster and spectate. The addon also prints the tank's run announcements in your chat as `[DungeonClear]` lines — they ride a hidden addon channel a stock client never shows.
 - **Your own XP rate** — a 1–10 slider sets how fast you level: 1 = Blizzlike, up to the server's cap.
 - **Hardcore** — opt a level-1 character into permadeath (with a loud confirm), and challenge other hardcore players to lethal **Mak'gora** duels.
 - **Quality of life** — current-target readout, danger-command confirmations, favorites, command history, a draggable panel + launcher, dropdowns for fixed choices (race, class, gender, roll, raid icon, …), and remembered input values.
@@ -66,7 +67,8 @@ A plain (no-`$`) whisper to a bot is **AI chat** — the bot talks back in chara
 | Tab | What's inside |
 |---|---|
 | **★ Companion** | Your permanent battle companion: status, summon / dismiss / forget, and a faction-aware Create row with race + class dropdowns |
-| **Bots** | Party builder (`.playerbots`), `$` orders, roles / specs, gear & loot, and the dungeon-run flow — with a **Party / Whisper** scope switch. Sub-tabs: Party · Roles · Combat · Items · Dungeon |
+| **Bots** | Party builder (`.playerbots`), `$` orders, roles / specs, gear & loot, the dungeon-run flow, and the plain-English **Speak** guide — with a **Party / Whisper** scope switch. Sub-tabs: Party · Roles · Combat · Items · Dungeon · Speak |
+| **Dungeon Clear** | A tank bot runs the dungeon for your group *(repack v1.4.0)*: on / off / pause / skip, pull mode, status, boss roster, send-to-boss, settings and spectate — plus `[DungeonClear]` chat announcements |
 | **★ XP Rate** | A 1–10 slider + view / enable / disable / reset for your personal XP rate |
 | **★ Hardcore** | Opt into permadeath (`.hardcore on`, with a permadeath confirm) and Mak'gora duels |
 | **Favorites** / **History** | Pinned commands, and the last commands you sent (click to re-run) |

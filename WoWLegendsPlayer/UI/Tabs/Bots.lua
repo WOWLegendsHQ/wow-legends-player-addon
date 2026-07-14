@@ -117,6 +117,10 @@ local Movement = {
     order("o_tele",     "Teleport",  "teleport", "Teleport (e.g. to you)."),
     order("o_go",       "Go to",     "go %s",    "Travel to a named place or coords.",
         { {key="where",placeholder="place / coords",width=150} }),
+    order("o_hearth",   "Hearthstone","hearthstone",
+        "The bot really casts its Hearthstone (interruptible cast). In party scope this is the whole squad's everyone-hearth button. Silent if the stone is missing or on cooldown - the spoken order 'go home' answers 'My hearthstone is still cooling down.' instead. Not usable in battlegrounds. (New in v1.4.0.)"),
+    order("o_guidestop","Guide: stop","wl guide stop",
+        "Cancel an active guide escort ('take me to ...'). Follow or Stay also cancel it. (New in v1.4.0.)"),
 }
 local Combat = {
     order("o_attack",   "Attack",        "attack",       "Attack your current target."),
@@ -186,6 +190,8 @@ local function dungeonBuilder(parent)
         "The Dungeon Finder won't drag your bots inside - you summon them. Flow: build a party (Party tab) -> "
         .. "set roles (Roles tab: a tank, a healer, dps) -> gear up -> walk in -> Summon party -> drive the fight. "
         .. "On this realm bots usually auto-summon a few seconds after the leader zones in; Summon is the manual backup."
+        .. WLP.colors.reset .. "\n" .. WLP.colors.label
+        .. "Prefer hands-off? New in v1.4.0: the Dungeon Clear tab lets a tank bot run the whole dungeon for you."
         .. WLP.colors.reset)
 
     local Steps = {
@@ -217,6 +223,46 @@ local function dungeonBuilder(parent)
     WLP.LayoutRows(parent, Recover, { yTop = y + used + 6, x = 8, columnWidth = 360, sectionTitle = "Regroup & recover" })
 end
 
+-- ─── SPEAK: plain-English orders, the Guide & the Sage (v1.4.0) ────────────
+-- Documentation panel: these are things you TYPE or SAY to your bots, not
+-- buttons. Exact phrases are deterministic (work with NO AI configured);
+-- free-form sentences need an AI backend. Gated by WowLegends.AiCommand.Enabled.
+local function speakBuilder(parent)
+    local c = WLP.colors
+    local fs = parent:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+    fs:SetPoint("TOPLEFT", parent, "TOPLEFT", 8, -8)
+    fs:SetPoint("TOPRIGHT", parent, "TOPRIGHT", -8, -8)
+    fs:SetJustifyH("LEFT")
+    fs:SetText(
+        c.muted .. "New in v1.4.0: talk to your bots in plain English - no $ needed. The exact phrases below always work, "
+        .. "even with no AI configured; free-form sentences need an AI backend (Ollama / API key / hosted). "
+        .. "$ orders keep working regardless." .. c.reset .. "\n"
+        .. c.warn .. "Server gate: WowLegends.AiCommand.Enabled = 1 in mod_wowlegends.conf - it ships OFF by default "
+        .. "(the PTR has it ON)." .. c.reset .. "\n\n"
+        .. c.label .. "Whisper a bot (no $):" .. c.reset .. "\n"
+        .. "  follow / stay / attack / flee / drink / eat / come here / go home\n"
+        .. "  attack the <mob name>  - finds the mob near YOU and targets it\n"
+        .. c.muted .. "  One ack whisper ('On it - right behind you.') or an honest refusal\n"
+        .. "  ('Pulling is a tank's job - I'm not built for it.')" .. c.reset .. "\n\n"
+        .. c.label .. "Say it to the group (party/raid/say/yell):" .. c.reset .. "\n"
+        .. "  everyone follow me / all of you attack the kobold miner / bots go home / you guys stay here\n"
+        .. c.muted .. "  One bot answers for the squad. Big calls (everyone go home, everyone grind) ask you to\n"
+        .. "  repeat within 45 s to confirm." .. c.reset .. "\n\n"
+        .. c.label .. "The Guide - walked escorts:" .. c.reset .. "\n"
+        .. "  take me to booty bay / guide me to the wailing caverns / take me to my quest\n"
+        .. "  lead me to an innkeeper / my trainer / a repair vendor / the auction house / a flight master\n"
+        .. c.muted .. "  The bot walks you there on roads (no teleport), yells if you fall behind, comes back for you.\n"
+        .. "  Same continent only. Cancel with $wl guide stop (or $follow / $stay)." .. c.reset .. "\n\n"
+        .. c.label .. "The Sage - ask real data questions in a whisper:" .. c.reset .. "\n"
+        .. "  who sells Refreshing Spring Water? / where is Mankrik? / what does [linked quest] reward?\n"
+        .. "  price of the Bronze Tube?\n"
+        .. c.muted .. "  Answers are grounded in this server's actual vendors, prices and spawns.\n"
+        .. "  Needs AI chat configured; the Sage itself is free and on by default." .. c.reset .. "\n\n"
+        .. c.muted .. "Also new in v1.4.0, no commands needed: healers now save YOU first (Triage Healer), per-bot\n"
+        .. "voice personalities (Voice Cards), no more chat spam (Speech Governor), and bots walk real roads\n"
+        .. "world-wide (Legend Roads)." .. c.reset)
+end
+
 -- ─── Tab assembly: scope bar + sub-tabs ────────────────────────────────────
 WLP.RegisterTab({
     id = "bots", label = "Bots",
@@ -235,6 +281,7 @@ WLP.RegisterTab({
             { label = "Combat",  builder = combatBuilder },
             { label = "Items",   builder = itemsBuilder },
             { label = "Dungeon", builder = dungeonBuilder },
+            { label = "Speak",   builder = speakBuilder },
         }, "bots")
     end,
 })

@@ -1,8 +1,8 @@
 ## Interface: 30300
 ## Title: |cffffc94dWoW Legends|r Player
-## Notes: In-game player toolkit for WoW Legends (WotLK 3.3.5a / AzerothCore) — build & command a party of AI bots, set their roles, run dungeons, tune your own XP rate, manage your personal Companion and opt into Hardcore. Sends only your own commands; needs no special permissions.
+## Notes: In-game player toolkit for WoW Legends (WotLK 3.3.5a / AzerothCore) — build & command a party of AI bots, set their roles, run dungeons (or let a tank bot clear them for you with Dungeon Clear), tune your own XP rate, manage your personal Companion and opt into Hardcore. Sends only your own commands; needs no special permissions.
 ## Author: WoW Legends (timoinglin)
-## Version: 0.1.0
+## Version: 0.2.0
 ## SavedVariables: WoWLegendsPlayer_DB
 ## X-Website: https://wow-legends.eu
 ## DefaultState: enabled
@@ -12,6 +12,7 @@ Core\Init.lua
 Core\Util.lua
 Core\SavedVars.lua
 Core\CommandRunner.lua
+Core\DungeonClear.lua
 
 # ─── Data ─────────────────────────────────────────────────────────────────
 Data\Specs.lua
@@ -24,6 +25,7 @@ UI\MainFrame.lua
 # ─── Tabs (registration order = display order) ────────────────────────────
 UI\Tabs\Companion.lua
 UI\Tabs\Bots.lua
+UI\Tabs\DungeonClear.lua
 UI\Tabs\XP.lua
 UI\Tabs\Hardcore.lua
 UI\Tabs\Favorites.lua
