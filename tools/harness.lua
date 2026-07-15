@@ -100,6 +100,7 @@ GetNumRaidMembers = function() return 0 end
 GetNumPartyMembers = function() return 0 end
 UnitName = function() return "Tester" end
 UnitClass = function() return "Warrior", "WARRIOR" end
+UnitIsPlayer = function() return true end
 UnitFactionGroup = function() return "Alliance" end
 wipe = function(t) for k in pairs(t) do t[k] = nil end return t end
 

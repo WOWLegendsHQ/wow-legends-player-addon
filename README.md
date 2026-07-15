@@ -67,7 +67,7 @@ A plain (no-`$`) whisper to a bot is **AI chat** — the bot talks back in chara
 | Tab | What's inside |
 |---|---|
 | **★ Companion** | Your permanent battle companion: status, summon / dismiss / forget, and a faction-aware Create row with race + class dropdowns |
-| **Bots** | Party builder (`.playerbots`), `$` orders, roles / specs, gear & loot, the dungeon-run flow, and the plain-English **Speak** guide — with a **Party / Whisper** scope switch. Sub-tabs: Party · Roles · Combat · Items · Dungeon · Speak |
+| **Bots** | Party builder (`.playerbots`), `$` orders, a **per-bot spec dropdown** (target a bot, pick its build — it re-gears itself), gear & loot, the dungeon-run flow, and the plain-English **Speak** guide — with a **Party / Whisper** scope switch. Sub-tabs: Party · Roles · Combat · Items · Dungeon · Speak |
 | **Dungeon Clear** | A tank bot runs the dungeon for your group *(repack v1.4.0)*: on / off / pause / skip, pull mode, status, boss roster, send-to-boss, settings and spectate — plus `[DungeonClear]` chat announcements |
 | **★ XP Rate** | A 1–10 slider + view / enable / disable / reset for your personal XP rate |
 | **★ Hardcore** | Opt into permadeath (`.hardcore on`, with a permadeath confirm) and Mak'gora duels |

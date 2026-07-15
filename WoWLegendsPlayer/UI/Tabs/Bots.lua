@@ -77,8 +77,8 @@ local Roles = {
     order("r_report",  "Current spec",   "talents",           "Report the bot's current spec + help."),
     order("r_list",    "List specs",     "talents spec list", "List this class's premade specs (point spreads)."),
     order("r_set",     "Set spec",       "talents spec %s",
-        "Switch to a named spec - this sets tank/heal/dps.\nWarrior: arms fury protection | Paladin: holy protection retribution | Hunter: beast mastery / marksmanship / survival | Rogue: assasination combat subtlety | Priest: discipline holy shadow | DK: blood frost unholy | Shaman: elemental enhancement restoration | Mage: arcane fire frost | Warlock: affliction demonology destruction | Druid: balance / feral combat / restoration.",
-        { {key="spec",placeholder="spec name",width=160} }),
+        "Switch to a spec by its PREMADE build name - e.g. arms pve, prot pve, holy pvp - exactly as listed (lowercase, spaces).\nThe tree name the bot REPORTS does not work here: 'protection' alone fails with 'Spec not found'. Use the dropdown above for the right names, or List specs for the bot's own list.",
+        { {key="spec",placeholder="premade name",width=160} }),
     order("r_switch",  "Dual-spec",      "talents switch %s", "Activate primary (1) or secondary (2) dual-spec.",
         { {key="n",placeholder="1 or 2",choices={"1","2"},width=70} }),
     order("r_autopick","Auto-pick tree", "talents autopick",  "Auto-pick a full talent tree for the level."),
@@ -86,20 +86,94 @@ local Roles = {
         { {key="link",placeholder="talent link",width=160} }),
 }
 
-local function rolesBuilder(parent)
-    local used = WLP.LayoutRows(parent, Roles, { yTop = 8, sectionTitle = "Set roles via spec ($talents)" })
+-- ─── Per-bot spec dropdown (v1.4.0) ────────────────────────────────────────
+-- Target a bot -> the dropdown lists THAT class's premade builds (friendly
+-- labels, Tank/Healer tagged). Picking one whispers `$talents spec <premade>`
+-- to the bot, then `$autogear` right after - a spec change alone does NOT
+-- re-gear, so a fresh tank would have no shield. Names from Data/Specs.lua
+-- (verified against the live playerbots.conf).
+local function buildSpecPicker(parent)
+    local hdr = WLP.CreateSectionHeader(parent, "Set spec per bot (pick from the list)")
+    hdr:SetPoint("TOPLEFT", parent, "TOPLEFT", 8, -8)
 
-    -- Spec → role reference, straight from §3.
-    local y = -(8 + used + 6)
+    local targetFS = parent:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+    targetFS:SetPoint("TOPLEFT", parent, "TOPLEFT", 12, -(8 + hdr:GetHeight() + 8))
+
+    local dd = WLP.CreateChoice(parent, 190, 24, {}, "target a bot first")
+    dd:SetPoint("LEFT", targetFS, "RIGHT", 12, 0)
+
+    local hint = parent:CreateFontString(nil, "OVERLAY", "GameFontDisableSmall")
+    hint:SetPoint("TOPLEFT", targetFS, "BOTTOMLEFT", 0, -8)
+    hint:SetText("Sends $talents spec <premade name>, then $autogear so the bot re-gears for the new spec.\n"
+        .. "Death knights: any tree tanks via Frost Presence + gear - no single tank build, so none is tagged.")
+
+    -- Refresh label + choices for the current target.
+    local function refresh()
+        local name = UnitName("target")
+        local isPlayer = UnitIsPlayer and UnitIsPlayer("target")
+        local _, token = UnitClass("target")
+        local choices = (name and isPlayer) and WLP.Specs.PremadeChoices(token) or nil
+        if choices then
+            targetFS:SetText(WLP.colors.label .. "Bot: " .. WLP.colors.reset
+                .. WLP.colors.accent .. name .. WLP.colors.reset
+                .. WLP.colors.muted .. "  (" .. (UnitClass("target") or "?") .. ")" .. WLP.colors.reset)
+            dd.SetChoices(choices)
+        else
+            targetFS:SetText(WLP.colors.muted .. "Bot: target one of your bots" .. WLP.colors.reset)
+            dd.SetChoices({})
+        end
+        dd.SetValue(nil)
+    end
+
+    dd:HookScript("OnClick", function()
+        -- Opening with no valid target: say why the list is empty.
+        if not (UnitName("target") and UnitIsPlayer and UnitIsPlayer("target")) then
+            WLP.Warn("target one of your bots first - the list shows that class's builds.")
+        end
+    end)
+
+    -- The onSelect callback wasn't passed at creation (choices are dynamic),
+    -- so wire the selection through SetValue.
+    local origSetValue = dd.SetValue
+    dd.SetValue = function(v)
+        origSetValue(v)
+        if not v then return end
+        local bot = UnitName("target")
+        if WLP.IsBlank(bot) then WLP.Warn("no bot targeted."); return end
+        local _, token = UnitClass("target")
+        WLP.RunBotOrder("talents spec " .. v, { scope = "whisper", bot = bot })
+        WLP.RunBotOrder("autogear",           { scope = "whisper", bot = bot })
+        WLP.Print("sent " .. WLP.colors.brand .. WLP.Specs.PremadeLabel(token, v) .. WLP.colors.reset
+            .. " to " .. WLP.colors.accent .. bot .. WLP.colors.reset .. " (+ autogear).")
+    end
+
+    local watcher = CreateFrame("Frame", nil, parent)
+    watcher:RegisterEvent("PLAYER_TARGET_CHANGED")
+    watcher:SetScript("OnEvent", refresh)
+    parent:HookScript("OnShow", refresh)
+    refresh()
+
+    return 8 + hdr:GetHeight() + 8 + 24 + 8 + 28   -- height used by the picker block
+end
+
+local function rolesBuilder(parent)
+    local pickerUsed = buildSpecPicker(parent)
+
+    local used = WLP.LayoutRows(parent, Roles, { yTop = pickerUsed + 10,
+        sectionTitle = "Spec commands ($talents)" })
+
+    -- Premade-name -> role reference (names verified against playerbots.conf).
+    -- LayoutRows' return already spans from the panel top (it includes yTop).
+    local y = -(used + 8)
     local ref = parent:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
     ref:SetPoint("TOPLEFT", parent, "TOPLEFT", 8, y)
     ref:SetPoint("TOPRIGHT", parent, "TOPRIGHT", -8, y)
     ref:SetJustifyH("LEFT")
     ref:SetText(
-        WLP.colors.label .. "Pick a tank, a healer, and some DPS:" .. WLP.colors.reset .. "\n"
-        .. WLP.colors.accent .. "Tank" .. WLP.colors.reset .. " = protection (warrior/paladin), blood (DK), feral combat (druid)\n"
-        .. WLP.colors.good   .. "Heal" .. WLP.colors.reset .. " = holy / discipline (priest, paladin), restoration (druid/shaman)\n"
-        .. WLP.colors.muted  .. "Everything else is DPS. Whisper a single bot to set just that one, or use party scope to set the lot."
+        WLP.colors.label .. "Pick a tank, a healer, and some DPS (premade names):" .. WLP.colors.reset .. "\n"
+        .. WLP.colors.accent .. "Tank" .. WLP.colors.reset .. " = prot pve (warrior/paladin), bear pve (druid) - DKs tank in any tree via Frost Presence + gear\n"
+        .. WLP.colors.good   .. "Heal" .. WLP.colors.reset .. " = holy pve / disc pve (paladin, priest), resto pve (druid/shaman)\n"
+        .. WLP.colors.muted  .. "Everything else is DPS; each build also has a pvp variant (arms pvp, resto pvp, ...). The dropdown above sends these exact names for you."
         .. WLP.colors.reset)
 end
 
