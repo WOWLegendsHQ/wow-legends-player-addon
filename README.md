@@ -30,6 +30,7 @@ It shares its look and feel with the **[GM addon](https://github.com/WOWLegendsH
 - **★ Companion** — your ONE permanent battle companion that fights at your side, chats, and remembers you. Create it with race and class dropdowns, then drive it like any bot.
 - **PlayerBot command center** — build a party (`.playerbots`), then command your bots with one-click `$` orders (movement, combat, roles/specs, gear, loot) through a **Party / Whisper** scope switch, plus a guided **Dungeon** run flow and a **Speak** guide to the plain-English orders.
 - **Dungeon Clear** *(repack v1.4.0)* — let a tank bot run the whole dungeon while you play along: start / stop / pause / skip, a pull-mode picker, boss roster and spectate. The addon also prints the tank's run announcements in your chat as `[DungeonClear]` lines — they ride a hidden addon channel a stock client never shows.
+- **Per-bot spec dropdown** — target a bot and pick its build from a list (Tank / Healer builds tagged): it swaps spec **and re-gears itself**. Uses the exact premade build names (`prot pve`, not "protection"), so no more *Spec not found*.
 - **Your own XP rate** — a 1–10 slider sets how fast you level: 1 = Blizzlike, up to the server's cap.
 - **Hardcore** — opt a level-1 character into permadeath (with a loud confirm), and challenge other hardcore players to lethal **Mak'gora** duels.
 - **Quality of life** — current-target readout, danger-command confirmations, favorites, command history, a draggable panel + launcher, dropdowns for fixed choices (race, class, gender, roll, raid icon, …), and remembered input values.
@@ -56,7 +57,7 @@ WoW Legends bots respond to **two** kinds of command, and the addon sends each o
 | Type | Prefix | Sent as | Example |
 |------|--------|---------|---------|
 | **Dot-command** | `.` | chat line | `.xp set 5`, `.companion create orc warrior Grom` |
-| **Bot order** | `$` | whisper to a bot, or party/raid chat for all your bots | `$follow`, `$attack`, `$talents spec arms` |
+| **Bot order** | `$` | whisper to a bot, or party/raid chat for all your bots | `$follow`, `$attack`, `$talents spec arms pve` |
 
 A plain (no-`$`) whisper to a bot is **AI chat** — the bot talks back in character, it is *not* an order. The **Bots** tab has a scope selector — *All my bots (party)* or *Targeted bot (whisper)* — so every `$` order goes to the right place.
 
