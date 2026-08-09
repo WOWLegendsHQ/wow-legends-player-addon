@@ -8,7 +8,7 @@ local SIZE = 32
 function WLP.Toggle()
     local f = WoWLegendsPlayer_MainFrame
     if not f then
-        WLP.Warn("main frame not created — run /wlp debug.")
+        WLP.Warn("main frame not created - run /wlp debug.")
         return
     end
     if f:IsShown() then f:Hide() else f:Show(); f:Raise() end

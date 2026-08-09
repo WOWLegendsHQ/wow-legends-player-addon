@@ -52,7 +52,7 @@ function WLP.RunBotOrder(text, opts)
     if scope == "whisper" then
         local bot = opts.bot
         if WLP.IsBlank(bot) then bot = UnitName("target") end
-        if WLP.IsBlank(bot) then WLP.Warn("no bot targeted — target a bot to whisper the order, or switch scope to All my bots."); return end
+        if WLP.IsBlank(bot) then WLP.Warn("no bot targeted - target a bot to whisper the order, or switch scope to All my bots."); return end
         SendChatMessage(text, "WHISPER", nil, bot)
     else
         local inRaid  = GetNumRaidMembers and GetNumRaidMembers() > 0
@@ -60,7 +60,7 @@ function WLP.RunBotOrder(text, opts)
         if not inRaid and not inParty then
             -- Solo: a PARTY/RAID line is silently dropped, so the order would
             -- vanish with no feedback. Tell the player what to do instead.
-            WLP.Warn("you have no group — \"All my bots\" orders need your bots in your party/raid. Add bots (Party tab), or switch scope to Targeted bot (whisper).")
+            WLP.Warn("you have no group - \"All my bots\" orders need your bots in your party/raid. Add bots (Party tab), or switch scope to Targeted bot (whisper).")
             return
         end
         SendChatMessage(text, inRaid and "RAID" or "PARTY")
