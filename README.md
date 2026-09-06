@@ -32,6 +32,8 @@ It shares its look and feel with the **[GM addon](https://github.com/WOWLegendsH
 - **Dungeon Clear** *(repack v1.4.0)* — let a tank bot run the whole dungeon while you play along: start / stop / pause / skip, a pull-mode picker, boss roster and spectate. The addon also prints the tank's run announcements in your chat as `[DungeonClear]` lines — they ride a hidden addon channel a stock client never shows.
 - **Per-bot spec dropdown** — target a bot and pick its build from a list (Tank / Healer builds tagged): it swaps spec **and re-gears itself**. Uses the exact premade build names (`prot pve`, not "protection"), so no more *Spec not found*.
 - **Warband Camp** *(repack v1.5.0)* — manage your account's camp by buttons: claim the ground you stand on, travel to it, visit friends' camps, gather your alts, and furnish it from a **categorized catalogue of 69 props** with two dropdowns and a Place button. Breaking camp double-confirms; the panel greys itself out on realms that have camps disabled.
+- **Camp staff** *(repack v1.6.0)* — hire a **banker, merchant, barmaid or a guard** into your camp from the same dropdown: up to 6 of them, counted separately from your props. Guards take your faction and defend the place; the services are neutral, so any visitor can use them.
+- **Ask for a group out loud** *(repack v1.6.0)* — one button says `lfg` (or `lfg 10`) where you stand, and bots nearby who fit whisper you their class, spec and level. Your realm has to enable it; it ships off.
 - **Your own XP rate** — a 1–10 slider sets how fast you level: 1 = Blizzlike, up to the server's cap.
 - **Hardcore** — opt a level-1 character into permadeath (with a loud confirm), and challenge other hardcore players to lethal **Mak'gora** duels.
 - **Quality of life** — current-target readout, danger-command confirmations, favorites, command history, a draggable panel + launcher, dropdowns for fixed choices (race, class, gender, roll, raid icon, …), and remembered input values.
@@ -69,9 +71,9 @@ A plain (no-`$`) whisper to a bot is **AI chat** — the bot talks back in chara
 | Tab | What's inside |
 |---|---|
 | **★ Companion** | Your permanent battle companion: status, summon / dismiss / forget, and a faction-aware Create row with race + class dropdowns |
-| **Bots** | Party builder (`.playerbots`), `$` orders, a **per-bot spec dropdown** (target a bot, pick its build — it re-gears itself), gear & loot, the dungeon-run flow, and the plain-English **Speak** guide — with a **Party / Whisper** scope switch. Sub-tabs: Party · Roles · Combat · Items · Dungeon · Speak |
+| **Bots** | Party builder (`.playerbots`), `$` orders, a **per-bot spec dropdown** (target a bot, pick its build — it re-gears itself), gear & loot, the dungeon-run flow, an **Ask for a group** button that speaks `lfg` out loud *(v1.6.0)*, and the plain-English **Speak** guide — with a **Party / Whisper** scope switch. Sub-tabs: Party · Roles · Combat · Items · Dungeon · Speak |
 | **Dungeon Clear** | A tank bot runs the dungeon for your group *(repack v1.4.0)*: on / off / pause / skip, pull mode, status, boss roster, send-to-boss, settings and spectate — plus `[DungeonClear]` chat announcements |
-| **★ Warband** | Your account's camp *(repack v1.5.0)*: claim / travel / visit / break (double-confirmed), gather alts, and place any of 69 props via category + prop dropdowns, with a live N-of-cap gauge |
+| **★ Warband** | Your account's camp *(repack v1.5.0)*: claim / travel / visit / break (double-confirmed), gather alts, and place any of 69 props via category + prop dropdowns, with a live N-of-cap gauge — plus **camp staff** *(v1.6.0)*: banker, merchant, barmaid, guards, up to 6, counted apart from the props |
 | **★ XP Rate** | A 1–10 slider + view / enable / disable / reset for your personal XP rate |
 | **★ Hardcore** | Opt into permadeath (`.hardcore on`, with a permadeath confirm) and Mak'gora duels |
 | **Favorites** / **History** | Pinned commands, and the last commands you sent (click to re-run) |

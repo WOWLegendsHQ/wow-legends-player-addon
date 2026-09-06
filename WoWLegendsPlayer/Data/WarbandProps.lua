@@ -2,17 +2,25 @@
 -- The Warband Camp prop catalogue: category -> { key, label } pairs.
 -- key = what `.camp place <key>` expects · label = what the player sees.
 --
--- HARDCODED on purpose: the server has no query API for the catalogue. This is
--- the v1.5.0 SHIPPED list, verbatim from handoffs/2026-08-09_addon_warband_tab.md
--- (verified against wowlegends_warbandcamp.cpp). 69 props. When the catalogue
--- changes in a future repack, that handoff gets a revision — update BOTH the
--- entries and the version note below. `bones`/`bell`/`lodge`/`tower` do NOT
--- exist server-side — never add them.
+-- HARDCODED on purpose: the server has no query API for the catalogue. Props
+-- are the v1.5.0 SHIPPED list, verbatim from
+-- handoffs/2026-08-09_addon_warband_tab.md (verified against
+-- wowlegends_warbandcamp.cpp) — 69 of them, unchanged in v1.6.0. When the
+-- catalogue changes in a future repack, that handoff gets a revision — update
+-- BOTH the entries and the version note below. `bones`/`bell`/`lodge`/`tower`
+-- do NOT exist server-side — never add them.
+--
+-- CAMP STAFF (repack v1.6.0) are the last category. They ride the SAME
+-- `.camp place <key>` command, which is why they live here, but the server
+-- keeps them in their own table with their own cap (6, CAMP_MAX_NPCS) — so
+-- they do NOT move the prop gauge, and nothing in the reply stream reports how
+-- many you already have. Keys/labels are verbatim from g_npcCatalogue.
 
 local addonName, WLP = ...
 
 WLP.WarbandProps = {
-    catalogueVersion = "repack v1.5.0",
+    catalogueVersion = "repack v1.6.0",
+    staffCap = 6,               -- CAMP_MAX_NPCS; cannot be read back from the server
     categories = {
         { name = "Shelter", props = {
             { "tent", "Tent" }, { "tent-a", "Alliance Tent" }, { "tent-h", "Horde Tent" },
@@ -67,6 +75,12 @@ WLP.WarbandProps = {
             { "bigtent", "Large Tent" }, { "stable", "Stable" }, { "doghouse", "Doghouse" },
             { "outhouse", "Outhouse" },
         } },
+        -- Camp staff: live creatures, own cap, separate from the prop gauge.
+        { name = "Camp staff", staff = true, props = {
+            { "banker", "Goblin Banker" }, { "merchant", "Goblin Merchant" },
+            { "barkeep", "Barmaid" },
+            { "guard-human", "Human Guard" }, { "guard-orc", "Orc Guard" },
+        } },
     },
 }
 
@@ -75,6 +89,14 @@ function WLP.WarbandProps.CategoryNames()
     local out = {}
     for i, cat in ipairs(WLP.WarbandProps.categories) do out[i] = cat.name end
     return out
+end
+
+-- True when that category holds camp staff rather than scenery.
+function WLP.WarbandProps.IsStaff(catName)
+    for _, cat in ipairs(WLP.WarbandProps.categories) do
+        if cat.name == catName then return cat.staff == true end
+    end
+    return false
 end
 
 -- {text=label, value=key} choices for one category name (nil if unknown).

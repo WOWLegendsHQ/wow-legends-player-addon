@@ -18,6 +18,10 @@ local W = {
     zone    = nil,
     count   = nil,     -- props placed
     cap     = nil,     -- prop cap; nil = unlimited (MaxProps=0) or unknown
+    -- Camp staff (v1.6.0): the server never reports how many you have, only
+    -- that you hit the cap. No gauge is possible until it does.
+    staffFull = false,
+    staffCap  = nil,   -- learned from the cap refusal only
 }
 WLP.Warband = W
 
@@ -79,6 +83,27 @@ function W.ParseSystem(msg)
     if ps then
         W.enabled, W.hasCamp = true, true
         W.count = tonumber(ps)          -- cap unchanged (unlimited realms)
+        notify(); return true
+    end
+
+    -- Camp staff (repack v1.6.0). They live in their own server table with
+    -- their own cap, so they must NOT touch W.count/W.cap — the prop gauge
+    -- would drift. Nothing reports how many staff you have, so the only state
+    -- we can hold is "the last place attempt hit the cap".
+    -- "<Label> takes up position at your camp." / "<Label> will arrive shortly."
+    local hired = msg:match("(.+) takes up position at your camp")
+        or msg:match("(.+) will arrive shortly")
+    if hired then
+        W.enabled, W.hasCamp = true, true
+        W.staffFull = false
+        notify(); return true
+    end
+
+    -- Staff cap: "You already have 6 at your camp. Send one away with .camp remove first."
+    local staffCap = msg:match("You already have (%d+) at your camp")
+    if staffCap then
+        W.enabled, W.hasCamp = true, true
+        W.staffFull, W.staffCap = true, tonumber(staffCap)
         notify(); return true
     end
 

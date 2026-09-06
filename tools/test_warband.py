@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 """Unit test of the Warband Camp system-message parser (Core/Warband.lua).
 
-Feeds the literal shipped v1.5.0 reply strings (some with |cff..|r color codes,
-which must be stripped) and asserts every state transition, including the
-regression trap: the "N of M" status form must be matched BEFORE the unlimited
-"N things" form, or the zone capture swallows half the sentence.
+Feeds the literal shipped reply strings (v1.5.0 props + v1.6.0 camp staff, some
+with |cff..|r color codes, which must be stripped) and asserts every state
+transition, including two regression traps:
+
+  * the "N of M" status form must be matched BEFORE the unlimited "N things"
+    form, or the zone capture swallows half the sentence;
+  * a camp-staff line must never move the prop gauge - staff live in their own
+    server table with their own cap, and nothing reports how many you have.
 
     pip install lupa
     python tools/test_warband.py
@@ -33,8 +37,9 @@ local chunk = assert(loadfile(BASE .. "/Core/Warband.lua"))
 chunk("WoWLegendsPlayer", WLP)
 local W = WLP.Warband
 
-FAILS = {}
+FAILS, CHECKS = {}, 0
 local function check(name, cond)
+    CHECKS = CHECKS + 1
     if not cond then table.insert(FAILS, name) end
 end
 
@@ -87,7 +92,29 @@ local z = W.zone
 check("noise: returns false", W.ParseSystem("You have learned a new spell: Fireball.") == false)
 check("noise: state untouched", W.zone == z and W.count == 200)
 
+-- 10. CAMP STAFF (repack v1.6.0). They ride the same .camp place command but
+-- live in their own server table with their own cap - so a hire must NOT move
+-- the prop gauge. That is the whole trap: count/cap belong to props only.
+local pCount, pCap = W.count, W.cap
+W.ParseSystem("|cff00ff00Goblin Banker|r takes up position at your camp.")
+check("staff: hire parsed", W.hasCamp == true)
+check("staff: prop count untouched", W.count == pCount and W.cap == pCap)
+check("staff: not full", W.staffFull == false)
+
+W.ParseSystem("Barmaid will arrive shortly.")
+check("staff: late arrival parsed", W.ParseSystem("Human Guard will arrive shortly.") == true)
+check("staff: count still untouched", W.count == pCount and W.cap == pCap)
+
+W.ParseSystem("You already have 6 at your camp. Send one away with |cffffff00.camp remove|r first.")
+check("staff: cap flagged", W.staffFull == true)
+check("staff: cap learned", W.staffCap == 6)
+check("staff: cap did not touch props", W.count == pCount and W.cap == pCap)
+
+W.ParseSystem("Orc Guard takes up position at your camp.")
+check("staff: hire clears the full flag", W.staffFull == false)
+
 RESULT_FAILS = table.concat(FAILS, ", ")
+RESULT_CHECKS = CHECKS
 ''')
 
 fails = str(lua.globals().RESULT_FAILS)
@@ -95,5 +122,5 @@ if fails:
     print("FAILED checks:", fails)
     print("\nWARBAND PARSER TEST: FAIL")
     raise SystemExit(1)
-print("all 18 checks passed")
+print("all %d checks passed" % int(lua.globals().RESULT_CHECKS))
 print("\nWARBAND PARSER TEST: PASS")

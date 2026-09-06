@@ -274,6 +274,8 @@ function WLP.CreateCommandRow(parent, def)
         if def.send == "bot" then
             local scope = (def.getScope and def.getScope()) or def.botScope
             WLP.RunBotOrder(line, { scope = scope })
+        elseif def.send == "say" then
+            WLP.RunSay(line)                    -- really spoken out loud
         else
             WLP.RunCommand(line, { danger = def.danger, hardcore = def.hardcore })
         end
@@ -299,6 +301,8 @@ function WLP.CreateCommandRow(parent, def)
         GameTooltip:AddLine(" ")
         if def.send == "bot" then
             GameTooltip:AddLine("Bot order - sent to all your bots (party/raid) or the targeted bot (whisper).", 0.90, 0.80, 0.50, true)
+        elseif def.send == "say" then
+            GameTooltip:AddLine("Said OUT LOUD in /say - everyone around you sees it, and that is the point: bots have to hear you.", 0.90, 0.80, 0.50, true)
         elseif def.wl then
             GameTooltip:AddLine("WoW Legends exclusive - your own command, no special access needed.", 1, 0.50, 0.0, true)
         else

@@ -2,7 +2,7 @@
 ## Title: |cffffc94dWoW Legends|r Player
 ## Notes: In-game player toolkit for WoW Legends (WotLK 3.3.5a / AzerothCore) — build & command a party of AI bots, set their roles, run dungeons (or let a tank bot clear them for you with Dungeon Clear), tune your own XP rate, manage your personal Companion and opt into Hardcore. Sends only your own commands; needs no special permissions.
 ## Author: WoW Legends (timoinglin)
-## Version: 0.3.0
+## Version: 0.4.0
 ## SavedVariables: WoWLegendsPlayer_DB
 ## X-Website: https://wow-legends.eu
 ## DefaultState: enabled

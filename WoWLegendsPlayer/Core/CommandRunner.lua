@@ -36,6 +36,17 @@ function WLP.RunCommand(line, opts)
     WLP._ExecuteRaw(line)
 end
 
+-- Spoken lines (repack v1.6.0 natural-language LFG). Unlike a dot-command,
+-- this one is REALLY said out loud: the server only listens for it on
+-- CHAT_MSG_SAY / CHAT_MSG_YELL, and nearby bots (default 100 yd) answer by
+-- whisper. Nothing is prefixed, nothing is hidden - what you send is what the
+-- zone sees.
+function WLP.RunSay(line)
+    if WLP.IsBlank(line) then return end
+    SendChatMessage(WLP.Trim(line), "SAY")
+    WLP.PushHistory(line)
+end
+
 -- Bot orders use the '$' command prefix (WL sets AiPlayerbot.CommandPrefix="$")
 -- and are delivered as chat: PARTY/RAID to command ALL your bots at once, or
 -- WHISPER to order a single targeted bot. A plain (no-$) whisper would feed the

@@ -5,7 +5,9 @@
 -- State + reply parsing live in Core/Warband.lua; the prop catalogue in
 -- Data/WarbandProps.lua. Module ships OFF server-side: on the literal
 -- not-enabled reply this panel greys out for the session.
--- Boundaries: NO Warband Bank, NO banner picker (v1.6 — layout room left).
+-- Camp staff (repack v1.6.0) ride the same place dropdown as a last category;
+-- they have their own server-side cap and NO readable count, so no gauge.
+-- Boundaries: NO Warband Bank, NO banner picker (still unbuilt server-side).
 
 local addonName, WLP = ...
 
@@ -77,11 +79,13 @@ local function warbandBuilder(parent)
     propDD:SetPoint("LEFT", catDD, "RIGHT", 8, 0)
 
     -- Category pick fills the prop list (dot-call style, matching CreateChoice).
+    -- It also swaps the hint: staff obey different rules from scenery.
     local origCatSet = catDD.SetValue
     catDD.SetValue = function(v)
         origCatSet(v)
         propDD.SetChoices(v and WLP.WarbandProps.PropChoices(v) or {})
         propDD.SetValue(nil)
+        if body.SetPlaceHint then body.SetPlaceHint(v and WLP.WarbandProps.IsStaff(v)) end
     end
 
     local placeBtn = WLP.MakeFlatButton(body, 110, 24, "Place", { justify = "CENTER" })
@@ -106,9 +110,21 @@ local function warbandBuilder(parent)
     placeHint:SetPoint("TOPLEFT", placeBtn, "BOTTOMLEFT", -4, -8)
     placeHint:SetPoint("RIGHT", body, "RIGHT", -8, 0)
     placeHint:SetJustifyH("LEFT")
-    placeHint:SetText("Props appear IN FRONT of you - face where you want it before clicking Place. "
+
+    local PROP_HINT = "Props appear IN FRONT of you - face where you want it before clicking Place. "
         .. "Bigger props land further out; stand on a table to place at table height. "
-        .. "You must be within 32 yd of the camp centre, on the ground.")
+        .. "You must be within 32 yd of the camp centre, on the ground."
+    -- Staff are counted separately from props server-side, and nothing reports
+    -- how many you have - so no gauge, and the cap only shows up as a refusal.
+    local STAFF_HINT = "Camp staff are people, not scenery: up to "
+        .. (WLP.WarbandProps.staffCap or 6) .. " of them, counted separately from your props "
+        .. "(the gauge above does not move). Guards take YOUR faction and defend the camp; "
+        .. "the banker, merchant and barmaid are neutral, so any visitor can use them. "
+        .. "Remove nearest sends one away too."
+    function body.SetPlaceHint(isStaff)
+        placeHint:SetText(isStaff and STAFF_HINT or PROP_HINT)
+    end
+    body.SetPlaceHint(false)
 
     -- ─── Facts footer ──────────────────────────────────────────────────────
     local facts = body:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
@@ -147,8 +163,14 @@ local function warbandBuilder(parent)
         else
             local things = W.count and (W.count .. (W.cap and (" of " .. W.cap) or "") .. " things set up")
                 or "contents unknown"
+            -- Staff have no gauge (the server reports no count) - the only
+            -- honest thing to show is that the last hire hit the cap.
+            local staff = W.staffFull
+                and (c.danger .. "  -  camp staff full (" .. (W.staffCap or WLP.WarbandProps.staffCap or 6)
+                     .. ") - Remove nearest to free a place" .. c.reset)
+                or ""
             statusFS:SetText(c.label .. "Camp: " .. c.reset .. c.accent .. (W.zone or "?") .. c.reset
-                .. c.muted .. "  -  " .. things .. c.reset)
+                .. c.muted .. "  -  " .. things .. c.reset .. staff)
         end
     end
     W.OnChange(render)

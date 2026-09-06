@@ -17,6 +17,10 @@ local function pb(id, label, fmt, tooltip, args, danger)        -- .playerbots d
     return { id = id, label = label, format = fmt, group = "Bots",
              tooltip = tooltip, args = args, danger = danger }
 end
+local function say(id, label, fmt, tooltip, args)               -- spoken aloud in /say
+    return { id = id, label = label, format = fmt, send = "say", wl = true,
+             group = "Bots", tooltip = tooltip, args = args }
+end
 
 -- ─── PARTY: build & manage your bots (.playerbots) ─────────────────────────
 local Build = {
@@ -67,9 +71,25 @@ local Manage = {
         "Remove a link.", { {key="acct",placeholder="account",width=120} }),
 }
 
+-- Natural-language LFG (repack v1.6.0). Not a command: a line you SAY out
+-- loud. The server listens on SAY/YELL only, matches a short trigger phrase,
+-- and has bots within ~100 yd whisper you. It ships OFF and the client cannot
+-- see the setting, so the tooltip has to say so.
+local Recruit = {
+    say("lfg_say", "Ask for a group", "lfg %s",
+        "Says it out loud where you stand. Bots nearby (about 100 yd) who fit whisper you their class, spec and level - same faction, within 4 levels of you, never somebody else's bot, up to 4 answers. Invite the ones you like.\n"
+        .. "Stand in a city: it only reaches who can hear you.\n"
+        .. "Size is optional and the server accepts 5, 10, 20, 25 or 40 only (blank = 5); any other number and the line is ignored.\n"
+        .. "30-second cooldown. Your realm has to enable it (WowLegends.LfgNatural.Enabled) - it ships OFF and the addon cannot read the setting, so no answer usually means it is off, not that nobody wanted you.\n"
+        .. "Different thing: the $lfg N bot order must be typed in a CHANNEL, not a whisper.",
+        { {key="size",placeholder="size (opt)",choices={"5","10","20","25","40"},optional=true,width=100} }),
+}
+
 local function partyBuilder(parent)
     WLP.LayoutRows(parent, Build,  { yTop = 8, x = 8,   columnWidth = 360, sectionTitle = "Build your party (.playerbots)" })
-    WLP.LayoutRows(parent, Manage, { yTop = 8, x = 380, columnWidth = 368, sectionTitle = "Re-gear & account linking" })
+    local usedR = WLP.LayoutRows(parent, Manage, { yTop = 8, x = 380, columnWidth = 368, sectionTitle = "Re-gear & account linking" })
+    WLP.LayoutRows(parent, Recruit, { yTop = usedR + 6, x = 380, columnWidth = 368,
+        sectionTitle = "Find a group (said out loud)" })
 end
 
 -- ─── ROLES: a bot's role = its spec ($talents) ─────────────────────────────
@@ -332,6 +352,12 @@ local function speakBuilder(parent)
         .. "  price of the Bronze Tube?\n"
         .. c.muted .. "  Answers are grounded in this server's actual vendors, prices and spawns.\n"
         .. "  Needs AI chat configured; the Sage itself is free and on by default." .. c.reset .. "\n\n"
+        .. c.label .. "Ask for a group out loud (new in v1.6.0):" .. c.reset .. "\n"
+        .. "  lfg / lfg 10 / looking for group / need a group   - said in /say or /yell, not whispered\n"
+        .. c.muted .. "  Bots around you who fit (same faction, within 4 levels, free) whisper you their class,\n"
+        .. "  spec and level; up to 4 answers, then a 30 s cooldown. Sizes the server takes: 5, 10, 20, 25, 40.\n"
+        .. "  There is a button for it on the Party sub-tab. Server gate: WowLegends.LfgNatural.Enabled = 1,\n"
+        .. "  which ships OFF - the addon cannot see the setting, so silence usually means it is off." .. c.reset .. "\n\n"
         .. c.muted .. "Also new in v1.4.0, no commands needed: healers now save YOU first (Triage Healer), per-bot\n"
         .. "voice personalities (Voice Cards), no more chat spam (Speech Governor), and bots walk real roads\n"
         .. "world-wide (Legend Roads)." .. c.reset)
