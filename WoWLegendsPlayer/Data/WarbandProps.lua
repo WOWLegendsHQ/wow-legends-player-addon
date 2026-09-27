@@ -19,7 +19,7 @@
 local addonName, WLP = ...
 
 WLP.WarbandProps = {
-    catalogueVersion = "repack v1.6.0",
+    catalogueVersion = "repack v1.7.0",
     staffCap = 6,               -- CAMP_MAX_NPCS; cannot be read back from the server
     categories = {
         { name = "Shelter", props = {
@@ -80,6 +80,7 @@ WLP.WarbandProps = {
             { "banker", "Goblin Banker" }, { "merchant", "Goblin Merchant" },
             { "barkeep", "Barmaid" },
             { "guard-human", "Human Guard" }, { "guard-orc", "Orc Guard" },
+            { "steward", "Camp Steward" },   -- repack v1.7.0
         } },
     },
 }

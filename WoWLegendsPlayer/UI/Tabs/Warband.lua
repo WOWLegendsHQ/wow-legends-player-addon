@@ -106,8 +106,32 @@ local function warbandBuilder(parent)
         WLP.After(3, function() placeBtn.label:SetText("Place") end)
     end)
 
+    -- Rotate (repack v1.7.0): turns the PROP nearest you (within 10 yd) in
+    -- place. Props only - staff are not in that table. Shares the placing
+    -- cooldown server-side ("Give it a moment.").
+    local function rotateBtn(label, arg, anchor, tip)
+        local b = WLP.MakeFlatButton(body, 84, 22, label, { justify = "CENTER" })
+        b:SetPoint(unpack(anchor))
+        b:SetScript("OnClick", function() WLP.RunCommand(".camp rotate" .. (arg and (" " .. arg) or "")) end)
+        b:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText(label, 1, 0.82, 0.30)
+            GameTooltip:AddLine(tip, 1, 1, 1, true)
+            GameTooltip:AddLine("Turns the prop nearest you (within 10 yd) without moving it.", 0.7, 0.7, 0.7, true)
+            GameTooltip:Show()
+        end)
+        b:SetScript("OnLeave", function() GameTooltip:Hide() end)
+        return b
+    end
+    local rotL = rotateBtn("Turn left", "left", { "TOPLEFT", placeBtn, "BOTTOMLEFT", 0, -8 },
+        "45 degrees to the left.")
+    local rotR = rotateBtn("Turn right", "right", { "LEFT", rotL, "RIGHT", 6, 0 },
+        "45 degrees to the right.")
+    rotateBtn("Face me", "face", { "LEFT", rotR, "RIGHT", 6, 0 },
+        "Turns it to face you.")
+
     local placeHint = body:CreateFontString(nil, "OVERLAY", "GameFontDisableSmall")
-    placeHint:SetPoint("TOPLEFT", placeBtn, "BOTTOMLEFT", -4, -8)
+    placeHint:SetPoint("TOPLEFT", rotL, "BOTTOMLEFT", -4, -8)
     placeHint:SetPoint("RIGHT", body, "RIGHT", -8, 0)
     placeHint:SetJustifyH("LEFT")
 
@@ -119,7 +143,9 @@ local function warbandBuilder(parent)
     local STAFF_HINT = "Camp staff are people, not scenery: up to "
         .. (WLP.WarbandProps.staffCap or 6) .. " of them, counted separately from your props "
         .. "(the gauge above does not move). Guards take YOUR faction and defend the camp; "
-        .. "the banker, merchant and barmaid are neutral, so any visitor can use them. "
+        .. "the banker, merchant, barmaid and steward are neutral, so any visitor can use them "
+        .. "(the steward can repair, keep a mailbox, cure resurrection sickness and reset dungeons - "
+        .. "whichever the server owner leaves on). "
         .. "Remove nearest sends one away too."
     function body.SetPlaceHint(isStaff)
         placeHint:SetText(isStaff and STAFF_HINT or PROP_HINT)

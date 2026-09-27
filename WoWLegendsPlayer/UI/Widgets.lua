@@ -301,6 +301,8 @@ function WLP.CreateCommandRow(parent, def)
         GameTooltip:AddLine(" ")
         if def.send == "bot" then
             GameTooltip:AddLine("Bot order - sent to all your bots (party/raid) or the targeted bot (whisper).", 0.90, 0.80, 0.50, true)
+        elseif def.send == "say" and def.swallowed then
+            GameTooltip:AddLine("Sent through /say, but the server takes it before anyone hears it.", 0.90, 0.80, 0.50, true)
         elseif def.send == "say" then
             GameTooltip:AddLine("Said OUT LOUD in /say - everyone around you sees it, and that is the point: bots have to hear you.", 0.90, 0.80, 0.50, true)
         elseif def.wl then

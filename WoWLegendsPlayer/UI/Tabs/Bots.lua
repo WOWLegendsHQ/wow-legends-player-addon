@@ -81,9 +81,18 @@ local Recruit = {
         .. "Stand in a city: it only reaches who can hear you.\n"
         .. "Size is optional and the server accepts 5, 10, 20, 25 or 40 only (blank = 5); any other number and the line is ignored.\n"
         .. "30-second cooldown. Your realm has to enable it (WowLegends.LfgNatural.Enabled) - it ships OFF and the addon cannot read the setting, so no answer usually means it is off, not that nobody wanted you.\n"
-        .. "Different thing: the $lfg N bot order must be typed in a CHANNEL, not a whisper.",
+        .. "Want a whole group built for you instead? Use Build my group below.",
         { {key="size",placeholder="size (opt)",choices={"5","10","20","25","40"},optional=true,width=100} }),
+    -- $lfg (repack v1.7.0): the server intercepts it in ANY chat and drops the
+    -- line, so SAY is silent and works solo - party chat would not (no group).
+    say("lfg_auto", "Build my group", "$lfg %s %s",
+        "The server picks free bots from anywhere in the world within 4 levels of you, fills only the tanks, healers and DPS you are missing, gears them for their spec and teleports them to you.\n"
+        .. "Size: 5, 10, 20, 25 or 40. Name a dungeon (e.g. utgarde keep) and they wait at its entrance instead.\n"
+        .. "Only your group leader can use it; not in battlegrounds or arenas. Nobody sees the line - the server swallows it. On by default; owners can turn it off (WowLegends.LfgAuto.Enabled).",
+        { {key="size",placeholder="size",choices={"5","10","20","25","40"},width=70},
+          {key="dungeon",placeholder="dungeon (opt)",optional=true,width=130} }),
 }
+Recruit[2].swallowed = true   -- the server consumes $lfg; nobody hears it
 
 local function partyBuilder(parent)
     WLP.LayoutRows(parent, Build,  { yTop = 8, x = 8,   columnWidth = 360, sectionTitle = "Build your party (.playerbots)" })

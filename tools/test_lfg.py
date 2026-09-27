@@ -80,6 +80,18 @@ WLP.RunSay("")
 WLP.RunSay(nil)
 check("blank never spoken", #SENT == before)
 
+-- 5b. $lfg group builder (repack v1.7.0): the '$' is part of the FORMAT, and
+-- RunSay must pass it through untouched; a multi-word dungeon survives.
+local auto = { id = "lfg_auto", format = "$lfg %s %s", send = "say",
+               args = { { key = "size", choices = { "5", "10", "20", "25", "40" } },
+                        { key = "dungeon", optional = true } } }
+check("auto: size only", WLP.BuildLine(auto, { size = "5" }) == "$lfg 5")
+check("auto: with dungeon", WLP.BuildLine(auto, { size = "5", dungeon = "utgarde keep" }) == "$lfg 5 utgarde keep")
+check("auto: size required", WLP.BuildLine(auto, { dungeon = "utgarde keep" }) == nil)
+local n = #SENT
+WLP.RunSay(WLP.BuildLine(auto, { size = "10" }))
+check("auto: spoken in SAY as-is", SENT[n + 1] and SENT[n + 1].channel == "SAY" and SENT[n + 1].text == "$lfg 10")
+
 -- 6. preview shows the plain line (no '$' - that decoration is bot-order only)
 check("preview is plain", WLP.PreviewLine(def, { size = "10" }) == "lfg 10")
 
