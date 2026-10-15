@@ -131,9 +131,14 @@ local function warbandBuilder(parent)
         "Turns it to face you.")
 
     local placeHint = body:CreateFontString(nil, "OVERLAY", "GameFontDisableSmall")
+    -- Width only, never a second anchor: "RIGHT" pins the string's vertical
+    -- centre to the middle of the body, which squeezes it to ONE truncated
+    -- line ("...") on the 3.3.5 client (PTR client test, 2026-10-15). With a
+    -- fixed width and no height the client wraps it and grows it downwards.
     placeHint:SetPoint("TOPLEFT", rotL, "BOTTOMLEFT", -4, -8)
-    placeHint:SetPoint("RIGHT", body, "RIGHT", -8, 0)
+    placeHint:SetWidth(360)
     placeHint:SetJustifyH("LEFT")
+    placeHint:SetJustifyV("TOP")
 
     local PROP_HINT = "Props appear IN FRONT of you - face where you want it before clicking Place. "
         .. "Bigger props land further out; stand on a table to place at table height. "
