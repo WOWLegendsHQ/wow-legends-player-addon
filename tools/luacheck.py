@@ -63,4 +63,20 @@ print("\n%d file(s), %d failed" % (len(files), bad))
 if nonascii:
     print("%d displayed string(s) with non-ASCII characters - they render as '?' "
           "in the WotLK client font." % nonascii)
-sys.exit(1 if (bad or nonascii) else 0)
+
+# The App compares the installed TOC's `## Version` with the latest release tag
+# (agreed with the app desk 2026-11-02), so it must be plain X.Y.Z - no "-beta",
+# no "v", no fourth number - and the release tag is "v" + exactly this string.
+version_bad = False
+tocs = glob.glob(os.path.join(root, "*.toc"))
+for toc in tocs:
+    m = re.search(r"^## Version:\s*(.*?)\s*$", open(toc, encoding="utf-8").read(), re.M)
+    ver = m.group(1) if m else None
+    if not ver or not re.fullmatch(r"\d+\.\d+\.\d+", ver):
+        version_bad = True
+        print("VERSION %s: '## Version: %s' must be plain X.Y.Z (the App compares it with the "
+              "release tag vX.Y.Z)" % (os.path.basename(toc), ver))
+    else:
+        print("version %s (release tag must be v%s)" % (ver, ver))
+
+sys.exit(1 if (bad or nonascii or version_bad) else 0)
