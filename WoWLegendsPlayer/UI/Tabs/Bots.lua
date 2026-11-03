@@ -86,7 +86,7 @@ local Recruit = {
     -- $lfg (repack v1.7.0): the server intercepts it in ANY chat and drops the
     -- line, so SAY is silent and works solo - party chat would not (no group).
     say("lfg_auto", "Build my group", "$lfg %s %s",
-        "The server picks free bots from anywhere in the world within 4 levels of you, fills only the tanks, healers and DPS you are missing, gears them for their spec and teleports them to you.\n"
+        "The server picks free bots from anywhere in the world within 4 levels of you, fills only the tanks, healers and DPS you are missing, gears them and teleports them to you. On repack v1.8.0+ they are geared close to your own item level (up to 10 above), so a fresh level 80 does not get a raid-geared party.\n"
         .. "Size: 5, 10, 20, 25 or 40. Name a dungeon (e.g. utgarde keep) and they wait at its entrance instead.\n"
         .. "Only your group leader can use it; not in battlegrounds or arenas. Nobody sees the line - the server swallows it. On by default; owners can turn it off (WowLegends.LfgAuto.Enabled).",
         { {key="size",placeholder="size",choices={"5","10","20","25","40"},width=70},
@@ -367,6 +367,9 @@ local function speakBuilder(parent)
         .. "  spec and level; up to 4 answers, then a 30 s cooldown. Sizes the server takes: 5, 10, 20, 25, 40.\n"
         .. "  There is a button for it on the Party sub-tab. Server gate: WowLegends.LfgNatural.Enabled = 1,\n"
         .. "  which ships OFF - the addon cannot see the setting, so silence usually means it is off." .. c.reset .. "\n\n"
+        .. c.label .. "Dungeon banter (new in v1.8.0):" .. c.reset .. "\n"
+        .. "  banter off / banter on   - said in party chat, no $\n"
+        .. c.muted .. "  Party bots comment on boss pulls, kills and wipes, never mid-fight. Off for one = off for the group." .. c.reset .. "\n\n"
         .. c.muted .. "Also new in v1.4.0, no commands needed: healers now save YOU first (Triage Healer), per-bot\n"
         .. "voice personalities (Voice Cards), no more chat spam (Speech Governor), and bots walk real roads\n"
         .. "world-wide (Legend Roads)." .. c.reset)

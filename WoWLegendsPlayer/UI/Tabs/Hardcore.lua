@@ -15,6 +15,16 @@ local Rows = {
       tooltip="Arm a duel TO THE DEATH with your targeted player. Both must be hardcore, target each other, and both run .makgora; the next normal duel within 30s becomes lethal and the loser falls forever. (Normal duels never kill.)" },
 }
 
+-- Most Wanted (repack v1.8.0), created and designed by Cazius. Only the two
+-- player commands; everything else (hitmen, the shop, bribes) is the bounty
+-- clerk's gossip menu in Stormwind / Orgrimmar.
+local Bounty = {
+    { id="bounty_me", label="My bounty", format=".bounty", wl=true, group="Hardcore",
+      tooltip="The price on your head and your wanted level, the next level, your best ever, your Bounty Coins, hunters slain, your place on the board - and any bodyguards or smoke bomb still running.\nKill the other faction and the price climbs; a masked bounty hunter comes to collect out in the wild. Spend coins at the bounty clerk (Stormwind's Champions' Hall, Orgrimmar's Hall of Legends)." },
+    { id="bounty_top", label="Most Wanted board", format=".bounty top", wl=true, group="Hardcore",
+      tooltip="The realm's most wanted players right now." },
+}
+
 local function hardcoreBuilder(parent)
     local info = parent:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
     info:SetPoint("TOPLEFT", parent, "TOPLEFT", 8, -8)
@@ -28,6 +38,8 @@ local function hardcoreBuilder(parent)
     local rowsTop = 8 + info:GetStringHeight() + 16
     local used = WLP.LayoutRows(parent, Rows, { yTop = rowsTop, x = 8,
         sectionTitle = "Hardcore & Mak'gora" })
+    WLP.LayoutRows(parent, Bounty, { yTop = rowsTop, x = 380, columnWidth = 368,
+        sectionTitle = "Most Wanted (created by Cazius)" })
 
     local warn = parent:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
     warn:SetPoint("TOPLEFT", parent, "TOPLEFT", 8, -(rowsTop + used + 12))

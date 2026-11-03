@@ -33,6 +33,8 @@ It shares its look and feel with the **[GM addon](https://github.com/WOWLegendsH
 - **Per-bot spec dropdown** — target a bot and pick its build from a list (Tank / Healer builds tagged): it swaps spec **and re-gears itself**. Uses the exact premade build names (`prot pve`, not "protection"), so no more *Spec not found*.
 - **Warband Camp** *(repack v1.5.0)* — manage your account's camp by buttons: claim the ground you stand on, travel to it, visit friends' camps, gather your alts, and furnish it from a **categorized catalogue of 69 props** with two dropdowns and a Place button. Breaking camp double-confirms; the panel greys itself out on realms that have camps disabled.
 - **Camp staff** *(repack v1.6.0 / v1.7.0)* — hire a **banker, merchant, barmaid, steward or a guard** into your camp from the same dropdown: up to 6 of them, counted separately from your props. Guards take your faction and defend the place; the services are neutral, so any visitor can use them. **Turn left / Turn right / Face me** buttons rotate the prop nearest you *(v1.7.0)*.
+- **Most Wanted** *(repack v1.8.0, created and designed by Cazius)* — check the price on your head, your wanted level and your Bounty Coins, or the realm's Most Wanted board, from the Hardcore tab.
+- **Back to where I was** *(repack v1.8.0)* — after travelling to a camp, one button takes you back to exactly where you left from.
 - **Build my group** *(repack v1.7.0)* — pick a size (and optionally a dungeon) and the server fills your missing tanks, healers and DPS with geared bots from anywhere in the world.
 - **Ask for a group out loud** *(repack v1.6.0)* — one button says `lfg` (or `lfg 10`) where you stand, and bots nearby who fit whisper you their class, spec and level. Your realm has to enable it; it ships off.
 - **Your own XP rate** — a 1–10 slider sets how fast you level: 1 = Blizzlike, up to the server's cap.
@@ -76,7 +78,7 @@ A plain (no-`$`) whisper to a bot is **AI chat** — the bot talks back in chara
 | **Dungeon Clear** | A tank bot runs the dungeon for your group *(repack v1.4.0)*: on / off / pause / skip, pull mode, status, boss roster, send-to-boss, settings and spectate — plus `[DungeonClear]` chat announcements |
 | **★ Warband** | Your account's camp *(repack v1.5.0)*: claim / travel / visit / break (double-confirmed), gather alts, and place any of 69 props via category + prop dropdowns, with a live N-of-cap gauge — plus **camp staff** *(v1.6.0)*: banker, merchant, barmaid, guards, up to 6, counted apart from the props |
 | **★ XP Rate** | A 1–10 slider + view / enable / disable / reset for your personal XP rate |
-| **★ Hardcore** | Opt into permadeath (`.hardcore on`, with a permadeath confirm) and Mak'gora duels |
+| **★ Hardcore** | Opt into permadeath (`.hardcore on`, with a permadeath confirm) and Mak'gora duels — plus **Most Wanted** *(v1.8.0, by Cazius)*: your bounty and the board |
 | **Favorites** / **History** | Pinned commands, and the last commands you sent (click to re-run) |
 
 Sections automatically use one or two columns based on their content.

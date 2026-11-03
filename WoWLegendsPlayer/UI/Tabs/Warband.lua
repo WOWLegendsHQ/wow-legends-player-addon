@@ -21,6 +21,8 @@ local CampRows = {
         "Found your Warband Camp on the ground you're standing on. The server refuses with a one-line reason if the spot won't work (indoors, water, city, bridge, too close to another camp, ...)."),
     row("wb_go", "Travel to camp", ".camp go",
         "Teleport to your camp. 5-minute cooldown (shared with Visit); blocked in combat, while dead, and in BGs/arenas/Pilgrim's Way."),
+    row("wb_back", "Back to where I was", ".camp back",
+        "After Travel or Visit, go back to exactly where you were (repack v1.8.0) - swap professions at camp, then return to your quest. One trip back per visit, within an hour, and only from the camp you travelled to. Starts the same 5-minute travel cooldown."),
     row("wb_alts", "Gather alts", ".camp alts",
         "Manually re-gather your alts at the camp (max 8). They normally gather on their own at login."),
     row("wb_visit", "Visit player", ".camp visit %s",
@@ -106,9 +108,9 @@ local function warbandBuilder(parent)
         WLP.After(3, function() placeBtn.label:SetText("Place") end)
     end)
 
-    -- Rotate (repack v1.7.0): turns the PROP nearest you (within 10 yd) in
-    -- place. Props only - staff are not in that table. Shares the placing
-    -- cooldown server-side ("Give it a moment.").
+    -- Rotate (repack v1.7.0): turns the prop nearest you (within 10 yd) in
+    -- place. Since v1.8.0 it turns camp staff too - except guards, which
+    -- wander. Shares the placing cooldown server-side ("Give it a moment.").
     local function rotateBtn(label, arg, anchor, tip)
         local b = WLP.MakeFlatButton(body, 84, 22, label, { justify = "CENTER" })
         b:SetPoint(unpack(anchor))
@@ -117,7 +119,7 @@ local function warbandBuilder(parent)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
             GameTooltip:SetText(label, 1, 0.82, 0.30)
             GameTooltip:AddLine(tip, 1, 1, 1, true)
-            GameTooltip:AddLine("Turns the prop nearest you (within 10 yd) without moving it.", 0.7, 0.7, 0.7, true)
+            GameTooltip:AddLine("Turns the prop nearest you (within 10 yd) without moving it. On repack v1.8.0+ it turns your banker, merchant, barmaid or steward too when you stand next to them; guards wander, so they are left as they are.", 0.7, 0.7, 0.7, true)
             GameTooltip:Show()
         end)
         b:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -151,7 +153,7 @@ local function warbandBuilder(parent)
         .. "the banker, merchant, barmaid and steward are neutral, so any visitor can use them "
         .. "(the steward can repair, keep a mailbox, cure resurrection sickness and reset dungeons - "
         .. "whichever the server owner leaves on). "
-        .. "Remove nearest sends one away too."
+        .. "Remove nearest sends one away too, and the Turn buttons face them (not guards, repack v1.8.0+)."
     function body.SetPlaceHint(isStaff)
         placeHint:SetText(isStaff and STAFF_HINT or PROP_HINT)
     end
