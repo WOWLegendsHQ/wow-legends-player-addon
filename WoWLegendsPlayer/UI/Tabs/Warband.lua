@@ -163,7 +163,12 @@ local function warbandBuilder(parent)
     local facts = body:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
     facts:SetPoint("BOTTOMLEFT", body, "BOTTOMLEFT", 8, 8)
     facts:SetPoint("BOTTOMRIGHT", body, "BOTTOMRIGHT", -8, 8)
+    -- Two bottom anchors give a width but no room to grow: the 3.3.5 client
+    -- kept 2 lines, cut the 2nd with "..." and dropped the Cooldowns line
+    -- (PTR client screenshot, 2026-11-05). An explicit height fixes the box.
+    facts:SetHeight(56)
     facts:SetJustifyH("LEFT")
+    facts:SetJustifyV("BOTTOM")
     facts:SetText(c.muted
         .. "The camp belongs to your ACCOUNT - every character shares it. Others see it only within 40 yd; "
         .. "friends can walk right in, no invite needed. Your alts gather there at login (max 8) and stroll "
