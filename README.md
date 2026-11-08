@@ -33,6 +33,7 @@ It shares its look and feel with the **[GM addon](https://github.com/WOWLegendsH
 - **Per-bot spec dropdown** — target a bot and pick its build from a list (Tank / Healer builds tagged): it swaps spec **and re-gears itself**. Uses the exact premade build names (`prot pve`, not "protection"), so no more *Spec not found*.
 - **Warband Camp** *(repack v1.5.0)* — manage your account's camp by buttons: claim the ground you stand on, travel to it, visit friends' camps, gather your alts, and furnish it from a **categorized catalogue of 69 props** with two dropdowns and a Place button. Breaking camp double-confirms; the panel greys itself out on realms that have camps disabled.
 - **Camp staff** *(repack v1.6.0 / v1.7.0)* — hire a **banker, merchant, barmaid, steward or a guard** into your camp from the same dropdown: up to 6 of them, counted separately from your props. Guards take your faction and defend the place; the services are neutral, so any visitor can use them. **Turn left / Turn right / Face me** buttons rotate the prop nearest you *(v1.7.0)*.
+- **Speech over enemy nameplates** — with enemy nameplates on (V), the game draws no chat bubble over that unit. The addon draws one: what a bot, NPC or player says or yells appears above their nameplate for a few seconds. Never over friendly plates (the game already bubbles those) and never when two plates share the name. On by default; `/wlp bubbles` turns it off and on. Idea and test: **Cazius**.
 - **Most Wanted** *(repack v1.8.0, created and designed by Cazius)* — check the price on your head, your wanted level and your Bounty Coins, or the realm's Most Wanted board, from the Hardcore tab.
 - **Back to where I was** *(repack v1.8.0)* — after travelling to a camp, one button takes you back to exactly where you left from.
 - **Build my group** *(repack v1.7.0)* — pick a size (and optionally a dungeon) and the server fills your missing tanks, healers and DPS with geared bots from anywhere in the world.
@@ -100,7 +101,7 @@ A coloured pip on each row shows the kind of command: cyan = your command (`.`),
 
 ### Slash commands
 
-`/wlp` (also `/bots`, `/wlplayer`) toggles the panel. Sub-commands: `reset` (recenter panel + button), `show` / `hide`, `debug` (module load status).
+`/wlp` (also `/bots`, `/wlplayer`) toggles the panel. Sub-commands: `reset` (recenter panel + button), `show` / `hide`, `debug` (module load status), `bubbles` (turn speech over enemy nameplates off / on; `bubbles on` / `bubbles off` set it).
 
 ---
 
