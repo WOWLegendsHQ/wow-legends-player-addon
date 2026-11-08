@@ -121,7 +121,7 @@ UIDropDownMenu_SetSelectedValue = function() end
 -- ─── Load addon in TOC order ────────────────────────────────────────────────
 local files = {
     "Core/Init.lua", "Core/Util.lua", "Core/SavedVars.lua", "Core/CommandRunner.lua",
-    "Core/DungeonClear.lua", "Core/Warband.lua",
+    "Core/DungeonClear.lua", "Core/Warband.lua", "Core/NameplateBubbles.lua",
     "Data/Specs.lua", "Data/WarbandProps.lua",
     "UI/ConfirmDialog.lua", "UI/Widgets.lua", "UI/MainFrame.lua",
     "UI/Tabs/Companion.lua", "UI/Tabs/Bots.lua", "UI/Tabs/DungeonClear.lua",

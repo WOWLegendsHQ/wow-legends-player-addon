@@ -26,6 +26,7 @@ WLP.defaults = {
     botScope  = "all",       -- where $ bot orders go: "all" (party/raid) or "whisper"
     minimap   = { hide = false },
     confirmDanger = true,     -- show confirm popup for danger commands
+    nameplateBubbles = true,  -- speech over enemy nameplates (Core/NameplateBubbles.lua)
 }
 
 local function copyDefaults(src, dst)
@@ -115,6 +116,13 @@ SlashCmdList["WLP"] = function(msg)
         if WoWLegendsPlayer_MainFrame then WoWLegendsPlayer_MainFrame:Hide() end
     elseif lcmd == "debug" then
         WLP.DumpDebug()
+    elseif lcmd:match("^bubbles") and WLP.NameplateBubbles then
+        local arg = lcmd:match("^bubbles%s+(%a+)")
+        local on
+        if arg == "on" then on = true
+        elseif arg == "off" then on = false
+        else on = (WLP.db.nameplateBubbles == false) end
+        WLP.NameplateBubbles.SetEnabled(on)
     else
         if WLP.Toggle then WLP.Toggle() end
     end
