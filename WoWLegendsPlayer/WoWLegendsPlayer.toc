@@ -15,6 +15,7 @@ Core\CommandRunner.lua
 Core\DungeonClear.lua
 Core\Warband.lua
 Core\NameplateBubbles.lua
+Core\DuelCountdown.lua
 
 # ─── Data ─────────────────────────────────────────────────────────────────
 Data\Specs.lua

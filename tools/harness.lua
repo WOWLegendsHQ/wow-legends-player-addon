@@ -61,7 +61,7 @@ for _, name in ipairs({
     "ClearAllPoints", "ClearFocus", "EnableMouse", "EnableMouseWheel", "EnableKeyboard",
     "Hide", "Raise", "RegisterForClicks", "RegisterForDrag", "SetAllPoints", "SetAlpha",
     "SetAutoFocus", "SetBackdrop", "SetBackdropBorderColor", "SetBackdropColor",
-    "SetClampedToScreen", "SetCursorPosition", "SetDrawLayer", "SetFontObject",
+    "SetClampedToScreen", "SetCursorPosition", "SetDrawLayer", "SetFont", "SetFontObject",
     "SetFontString", "SetFrameLevel", "SetFrameStrata", "SetHeight", "SetHighlightTexture",
     "SetJustifyH", "SetJustifyV", "SetMask", "SetMaxLetters", "SetMovable", "SetNormalTexture",
     "SetOwner", "SetParent", "SetPoint", "SetScale", "SetScrollChild", "SetSize",
@@ -121,7 +121,7 @@ UIDropDownMenu_SetSelectedValue = function() end
 -- ─── Load addon in TOC order ────────────────────────────────────────────────
 local files = {
     "Core/Init.lua", "Core/Util.lua", "Core/SavedVars.lua", "Core/CommandRunner.lua",
-    "Core/DungeonClear.lua", "Core/Warband.lua", "Core/NameplateBubbles.lua",
+    "Core/DungeonClear.lua", "Core/Warband.lua", "Core/NameplateBubbles.lua", "Core/DuelCountdown.lua",
     "Data/Specs.lua", "Data/WarbandProps.lua",
     "UI/ConfirmDialog.lua", "UI/Widgets.lua", "UI/MainFrame.lua",
     "UI/Tabs/Companion.lua", "UI/Tabs/Bots.lua", "UI/Tabs/DungeonClear.lua",
