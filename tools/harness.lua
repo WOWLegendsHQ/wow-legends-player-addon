@@ -199,6 +199,19 @@ fire("PLAYER_LOGIN")
 -- each Path, the tracker line and a toast - the window only draws on OnShow,
 -- which this stub never fires.
 if WLP.Paths and WLP.Paths.UI then
+    -- an older realm never answers: after 4 s the window says so plainly
+    local function shows(text)
+        for _, fr in ipairs(FRAMES) do if fr._text == text then return true end end
+        return false
+    end
+    WLP.Paths.askedAt = -10
+    local okNA, errNA = pcall(WLP.Paths.UI.Render)
+    if not okNA then table.insert(ERRORS, "PATHS no-answer render: " .. tostring(errNA)) end
+    if not shows("This realm doesn't support the Paths window yet.") then
+        table.insert(ERRORS, "PATHS: no 'doesn't support' line on a silent realm")
+    end
+    WLP.Paths.askedAt = nil
+
     local T = string.char(9)
     local function line(...) return table.concat({ ... }, T) end
     local lines = {

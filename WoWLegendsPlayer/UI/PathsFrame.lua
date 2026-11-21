@@ -599,7 +599,8 @@ local function renderDetail(set, p)
     if not p then
         local msg
         if not set then
-            msg = UI.noAnswer and "The realm did not answer. Paths of Legends need a WoW Legends realm."
+            local waited = P.askedAt and (GetTime() - P.askedAt) >= 4
+            msg = waited and "This realm doesn't support the Paths window yet."
                 or "Asking the realm..."
         else
             msg = "No Paths are offered on this realm."
@@ -784,11 +785,10 @@ end)
 
 f:SetScript("OnShow", function()
     PlaySound("AchievementMenuOpen")
-    UI.noAnswer = false
-    if P.Ask() and not P.data then
-        WLP.After(4, function()
-            if not P.data then UI.noAnswer = true; if f:IsShown() then UI.Render() end end
-        end)
+    P.Ask()
+    if not P.data then
+        -- an older realm never answers: say so plainly once the ask is 4 s old
+        WLP.After(4.2, function() if not P.data and f:IsShown() then UI.Render() end end)
     end
     UI.Render()
 end)
@@ -833,7 +833,8 @@ gossip:RegisterEvent("GOSSIP_SHOW")
 gossip:RegisterEvent("GOSSIP_CLOSED")
 gossip:SetScript("OnEvent", function(_, event)
     if event == "GOSSIP_SHOW" then
-        if P.IsHerald("npc") then UI.Dock() end
+        -- only on a realm that answered: older realms have the Herald too
+        if P.data and P.IsHerald("npc") then UI.Dock() end
     elseif event == "GOSSIP_CLOSED" then
         if docked then f:Hide() end
     end
