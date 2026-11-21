@@ -15,7 +15,7 @@ function WLP.RegisterTab(def) table.insert(WLP.tabs, def) end
 
 local function selectTab(index)
     local tabs = WLP.tabs
-    if not tabs[index] then return end
+    if not tabs[index] or tabs[index].action then return end
     for i, tab in ipairs(tabs) do
         if tab.button then
             if i == index then
@@ -81,7 +81,11 @@ local function buildAllTabs()
         if prev then btn:SetPoint("TOPLEFT", prev, "BOTTOMLEFT", 0, -2)
         else btn:SetPoint("TOPLEFT", rail, "TOPLEFT", 6, -6) end
         btn:SetID(i)
-        btn:SetScript("OnClick", function(self) selectTab(self:GetID()) end)
+        -- an entry with an `action` opens something else instead of a page
+        btn:SetScript("OnClick", function(self)
+            local t = WLP.tabs[self:GetID()]
+            if t and t.action then t.action() else selectTab(self:GetID()) end
+        end)
         tab.button = btn
         prev = btn
 

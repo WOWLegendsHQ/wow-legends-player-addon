@@ -2,7 +2,7 @@
 ## Title: |cffffc94dWoW Legends|r Player
 ## Notes: In-game player toolkit for WoW Legends (WotLK 3.3.5a / AzerothCore) - build & command a party of AI bots, set their roles, run dungeons (or let a tank bot clear them for you with Dungeon Clear), tune your own XP rate, manage your personal Companion and opt into Hardcore. Sends only your own commands; needs no special permissions.
 ## Author: WoW Legends (timoinglin)
-## Version: 0.6.0
+## Version: 0.7.0
 ## SavedVariables: WoWLegendsPlayer_DB
 ## X-Website: https://wow-legends.eu
 ## DefaultState: enabled
@@ -16,6 +16,7 @@ Core\DungeonClear.lua
 Core\Warband.lua
 Core\NameplateBubbles.lua
 Core\DuelCountdown.lua
+Core\Paths.lua
 
 # ─── Data ─────────────────────────────────────────────────────────────────
 Data\Specs.lua
@@ -33,8 +34,13 @@ UI\Tabs\DungeonClear.lua
 UI\Tabs\Warband.lua
 UI\Tabs\XP.lua
 UI\Tabs\Hardcore.lua
+UI\Tabs\Paths.lua
 UI\Tabs\Favorites.lua
 UI\Tabs\History.lua
+
+# ─── The Paths window (beside the panel) ──────────────────────────────────
+UI\PathsFrame.lua
+UI\PathsAlerts.lua
 
 # ─── Launcher (last so MainFrame exists) ──────────────────────────────────
 UI\ToggleButton.lua

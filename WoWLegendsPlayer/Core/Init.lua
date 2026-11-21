@@ -27,6 +27,7 @@ WLP.defaults = {
     minimap   = { hide = false },
     confirmDanger = true,     -- show confirm popup for danger commands
     nameplateBubbles = true,  -- speech over enemy nameplates (Core/NameplateBubbles.lua)
+    pathsTracker = false,     -- the one-line Paths tracker under the quest tracker
 }
 
 local function copyDefaults(src, dst)
