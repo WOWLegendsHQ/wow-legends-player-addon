@@ -48,13 +48,7 @@ local function createToggleButton()
             WLP.SaveFramePoint(self, "button")
         end
     end)
-    b:SetScript("OnClick", function(_, button)
-        if button == "RightButton" and WLP.Paths and WLP.Paths.UI then
-            WLP.Paths.UI.Toggle()
-        else
-            WLP.Toggle()
-        end
-    end)
+    b:SetScript("OnClick", function() WLP.Toggle() end)
 
     b:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_LEFT")
@@ -62,7 +56,6 @@ local function createToggleButton()
         GameTooltip:AddLine("Click to toggle the player panel.", 1, 1, 1)
         GameTooltip:AddLine("Build & command your bot party, set roles,", 0.8, 0.8, 0.8)
         GameTooltip:AddLine("run dungeons, tune XP, Companion, Hardcore.", 0.8, 0.8, 0.8)
-        GameTooltip:AddLine("Right-click: Paths of Legends.", 1, 1, 1)
         GameTooltip:AddLine("SHIFT-drag to move this button.", 0.7, 0.7, 0.7)
         GameTooltip:AddLine("/wlp reset to recenter everything.", 0.5, 0.5, 0.5)
         GameTooltip:Show()

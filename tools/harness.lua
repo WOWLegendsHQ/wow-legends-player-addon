@@ -52,8 +52,6 @@ function methods.HookScript(self, name, fn)
     return self
 end
 function methods.GetScript(self, name) return self._scripts[name] end
-function methods.GetChecked() return nil end
-function methods.IsMouseOver() return false end
 
 -- No-op (chainable) setters/actions. Anything NOT listed here or above reads
 -- as nil on a frame — matching real WoW, where unset fields (.data, ._name) are
@@ -63,7 +61,7 @@ for _, name in ipairs({
     "ClearAllPoints", "ClearFocus", "EnableMouse", "EnableMouseWheel", "EnableKeyboard",
     "Hide", "Raise", "RegisterForClicks", "RegisterForDrag", "SetAllPoints", "SetAlpha",
     "SetAutoFocus", "SetBackdrop", "SetBackdropBorderColor", "SetBackdropColor",
-    "SetClampedToScreen", "SetCursorPosition", "SetDrawLayer", "SetFont", "SetFontObject",
+    "SetClampedToScreen", "SetCursorPosition", "SetDrawLayer", "SetFontObject",
     "SetFontString", "SetFrameLevel", "SetFrameStrata", "SetHeight", "SetHighlightTexture",
     "SetJustifyH", "SetJustifyV", "SetMask", "SetMaxLetters", "SetMovable", "SetNormalTexture",
     "SetOwner", "SetParent", "SetPoint", "SetScale", "SetScrollChild", "SetSize",
@@ -71,8 +69,6 @@ for _, name in ipairs({
     "SetToplevel", "SetValue", "SetValueStep", "SetVertexColor", "SetVerticalScroll",
     "SetMinMaxValues", "SetWidth", "Show", "StartMoving", "StopMovingOrSizing",
     "AddLine", "AddMessage",
-    "SetDesaturated", "SetStatusBarTexture", "SetStatusBarColor", "SetChecked", "SetBlendMode",
-    "SetShadowOffset", "SetHyperlink", "LockHighlight", "UnlockHighlight",
 }) do
     methods[name] = function(self) return self end
 end
@@ -107,15 +103,6 @@ UnitClass = function() return "Warrior", "WARRIOR" end
 UnitIsPlayer = function() return true end
 UnitFactionGroup = function() return "Alliance" end
 wipe = function(t) for k in pairs(t) do t[k] = nil end return t end
-SendAddonMessage = function() end
-UnitGUID = function() return nil end
-GetItemIcon = function() return nil end
-GetItemInfo = function() return nil end
-MouseIsOver = function() return false end
-hooksecurefunc = function() end
-date = os.date
-UISpecialFrames = {}
-ITEM_QUALITY_COLORS = {}
 
 -- Faux scroll + dropdown API
 FauxScrollFrame_GetOffset = function() return 0 end
@@ -134,14 +121,12 @@ UIDropDownMenu_SetSelectedValue = function() end
 -- ─── Load addon in TOC order ────────────────────────────────────────────────
 local files = {
     "Core/Init.lua", "Core/Util.lua", "Core/SavedVars.lua", "Core/CommandRunner.lua",
-    "Core/DungeonClear.lua", "Core/Warband.lua", "Core/NameplateBubbles.lua", "Core/DuelCountdown.lua",
-    "Core/Paths.lua",
+    "Core/DungeonClear.lua", "Core/Warband.lua",
     "Data/Specs.lua", "Data/WarbandProps.lua",
     "UI/ConfirmDialog.lua", "UI/Widgets.lua", "UI/MainFrame.lua",
     "UI/Tabs/Companion.lua", "UI/Tabs/Bots.lua", "UI/Tabs/DungeonClear.lua",
-    "UI/Tabs/Warband.lua", "UI/Tabs/XP.lua", "UI/Tabs/Hardcore.lua", "UI/Tabs/Paths.lua",
-    "UI/Tabs/Favorites.lua", "UI/Tabs/History.lua",
-    "UI/PathsFrame.lua", "UI/PathsAlerts.lua", "UI/ToggleButton.lua",
+    "UI/Tabs/Warband.lua", "UI/Tabs/XP.lua", "UI/Tabs/Hardcore.lua",
+    "UI/Tabs/Favorites.lua", "UI/Tabs/History.lua", "UI/ToggleButton.lua",
 }
 
 local WLP = {}
@@ -194,69 +179,6 @@ local function fire(event, arg)
 end
 fire("ADDON_LOADED", "WoWLegendsPlayer")
 fire("PLAYER_LOGIN")
-
--- Paths window: feed a full push (every status the window can show) and draw
--- each Path, the tracker line and a toast - the window only draws on OnShow,
--- which this stub never fires.
-if WLP.Paths and WLP.Paths.UI then
-    -- an older realm never answers: after 4 s the window says so plainly
-    local function shows(text)
-        for _, fr in ipairs(FRAMES) do if fr._text == text then return true end end
-        return false
-    end
-    WLP.Paths.askedAt = -10
-    local okNA, errNA = pcall(WLP.Paths.UI.Render)
-    if not okNA then table.insert(ERRORS, "PATHS no-answer render: " .. tostring(errNA)) end
-    if not shows("This realm doesn't support the Paths window yet.") then
-        table.insert(ERRORS, "PATHS: no 'doesn't support' line on a silent realm")
-    end
-    WLP.Paths.askedAt = nil
-
-    local T = string.char(9)
-    local function line(...) return table.concat({ ... }, T) end
-    local lines = {
-        line("H", "990000", "Swear at the Herald of the Fallen, in every starting zone.", "0"),
-        line("P", "long_road", "The Long Road", "path", "active", "1795250000", "1335", "0", "", "1", "", "0"),
-        line("T", "long_road", "creed", "THE LONG ROAD is PERMANENT.", "0"),
-        line("T", "long_road", "creed", "Do you swear it?", "0"),
-        line("R", "long_road", "Achievement_Boss_Ragnaros", "Experience stops at level 60.", "0"),
-        line("G", "long_road", "the old world", "Ragnaros", "1", "1", "60", "Achievement_Boss_Ragnaros", "0"),
-        line("G", "long_road", "the old world", "Nefarian", "0", "1", "60", "Achievement_Boss_Nefarion", "0"),
-        line("G", "long_road", "Outland", "Illidan", "0", "1", "70", "Achievement_Boss_Illidan", "0"),
-        line("P", "iron_oath", "The Iron Oath", "path", "done", "0", "734", "0", "", "1", "", "0"),
-        line("G", "iron_oath", "the journey", "Reach level 80", "80", "80", "0", "Achievement_Level_80", "0"),
-        line("P", "pilgrims_way", "The Pilgrim's Way", "path", "forsaken", "0", "1663", "0", "", "0", "", "0"),
-        line("P", "slow_burn", "The Slow Burn", "path", "none", "0", "1638", "0", "Too late.", "1", "", "0"),
-        line("T", "slow_burn", "offer", "I swear the Slow Burn.", "0"),
-        line("G", "slow_burn", "the journey", "Reach level 80", "57", "80", "0", "Achievement_Level_80", "0"),
-        line("P", "hardcore", "Hardcore", "trial", "fallen", "0", "0", "0", "", "1", "Ability_Rogue_FeignDeath", "0"),
-        line("G", "hardcore", "the journey", "Level reached without dying", "12", "80", "0", "Achievement_Level_80", "0"),
-        line("D", "16", "0", "1"),
-    }
-    for _, l in ipairs(lines) do
-        local ok, err = pcall(WLP.Paths.Handle, l)
-        if not ok then table.insert(ERRORS, "PATHS handle: " .. tostring(err)) end
-    end
-    if not WLP.Paths.data or #WLP.Paths.data.list ~= 5 then
-        table.insert(ERRORS, "PATHS: push did not give 5 Paths")
-    else
-        local ui = WLP.Paths.UI
-        WLP.db.pathsTracker = true
-        for _, p in ipairs(WLP.Paths.data.list) do
-            local ok, err = pcall(function() ui.Open(p.key); ui.Render() end)
-            if not ok then table.insert(ERRORS, "PATHS render " .. p.key .. ": " .. tostring(err)) end
-        end
-        local ok, err = pcall(ui.RefreshTracker)
-        if not ok then table.insert(ERRORS, "PATHS tracker: " .. tostring(err)) end
-        local tt = ui.TrackerText(WLP.Paths.data.byKey.long_road)
-        if not tt:find("1/3, next Nefarian") then table.insert(ERRORS, "PATHS tracker text: " .. tt) end
-        for _, kind in ipairs({ "goal", "stage", "done", "forsaken" }) do
-            local p = WLP.Paths.data.byKey.long_road
-            ok, err = pcall(ui.Toast, { kind = kind, path = p, goal = p.goals[1], stage = { name = "the old world" } })
-            if not ok then table.insert(ERRORS, "PATHS toast " .. kind .. ": " .. tostring(err)) end
-        end
-    end
-end
 
 -- Fuzz: invoke every OnClick once (opens dropdowns, runs commands, switches
 -- tabs/sub-tabs) to exercise click paths a build-only pass never reaches.

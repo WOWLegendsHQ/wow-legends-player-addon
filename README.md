@@ -33,9 +33,6 @@ It shares its look and feel with the **[GM addon](https://github.com/WOWLegendsH
 - **Per-bot spec dropdown** — target a bot and pick its build from a list (Tank / Healer builds tagged): it swaps spec **and re-gears itself**. Uses the exact premade build names (`prot pve`, not "protection"), so no more *Spec not found*.
 - **Warband Camp** *(repack v1.5.0)* — manage your account's camp by buttons: claim the ground you stand on, travel to it, visit friends' camps, gather your alts, and furnish it from a **categorized catalogue of 69 props** with two dropdowns and a Place button. Breaking camp double-confirms; the panel greys itself out on realms that have camps disabled.
 - **Camp staff** *(repack v1.6.0 / v1.7.0)* — hire a **banker, merchant, barmaid, steward or a guard** into your camp from the same dropdown: up to 6 of them, counted separately from your props. Guards take your faction and defend the place; the services are neutral, so any visitor can use them. **Turn left / Turn right / Face me** buttons rotate the prop nearest you *(v1.7.0)*.
-- **Paths of Legends window** — every Path you can swear (The Long Road, The Iron Oath, The Pilgrim's Way, The Slow Burn) and Hardcore, in the style of the Achievement window: what each one asks of you, your road so far (the Long Road's bosses light up with a tick as they fall, level Paths show a 1–80 track), the keepsake you earn, and where to swear. Opens from the **Paths** entry in the panel, by **right-clicking** the launcher, with `/wlpaths`, and by itself beside the Herald of the Fallen. Achievement-style toasts when a boss is credited, a stage is cleared, or a Path is walked or forsaken, and an optional one-line tracker under your quest tracker. Swearing stays at the Herald. Needs a realm with the Paths of Legends; everything it shows comes from the server.
-- **Duel Master countdown** — practice duels at the Gurubashi Arena get a big centre-screen countdown with your opponent and their spec, a FIGHT! flash and the result. Needs a repack that has the Duel Master; without the addon the server's own centre text still counts down.
-- **Speech over enemy nameplates** — with enemy nameplates on (V), the game draws no chat bubble over that unit. The addon draws one: what a bot, NPC or player says or yells appears above their nameplate for a few seconds. Never over friendly plates (the game already bubbles those) and never when two plates share the name. On by default; `/wlp bubbles` turns it off and on. Idea and test: **Cazius**.
 - **Most Wanted** *(repack v1.8.0, created and designed by Cazius)* — check the price on your head, your wanted level and your Bounty Coins, or the realm's Most Wanted board, from the Hardcore tab.
 - **Back to where I was** *(repack v1.8.0)* — after travelling to a camp, one button takes you back to exactly where you left from.
 - **Build my group** *(repack v1.7.0)* — pick a size (and optionally a dungeon) and the server fills your missing tanks, healers and DPS with geared bots from anywhere in the world.
@@ -82,7 +79,6 @@ A plain (no-`$`) whisper to a bot is **AI chat** — the bot talks back in chara
 | **★ Warband** | Your account's camp *(repack v1.5.0)*: claim / travel / visit / break (double-confirmed), gather alts, and place any of 69 props via category + prop dropdowns, with a live N-of-cap gauge — plus **camp staff** *(v1.6.0)*: banker, merchant, barmaid, guards, up to 6, counted apart from the props |
 | **★ XP Rate** | A 1–10 slider + view / enable / disable / reset for your personal XP rate |
 | **★ Hardcore** | Opt into permadeath (`.hardcore on`, with a permadeath confirm) and Mak'gora duels — plus **Most Wanted** *(v1.8.0, by Cazius)*: your bounty and the board |
-| **★ Paths** | Opens the **Paths of Legends** window beside the panel: your Paths and Hardcore, their rules, your road, the keepsake, and a tracker switch |
 | **Favorites** / **History** | Pinned commands, and the last commands you sent (click to re-run) |
 
 Sections automatically use one or two columns based on their content.
@@ -104,9 +100,7 @@ A coloured pip on each row shows the kind of command: cyan = your command (`.`),
 
 ### Slash commands
 
-`/wlp` (also `/bots`, `/wlplayer`) toggles the panel. Sub-commands: `reset` (recenter panel + button), `show` / `hide`, `debug` (module load status), `bubbles` (turn speech over enemy nameplates off / on; `bubbles on` / `bubbles off` set it).
-
-`/wlpaths` toggles the Paths of Legends window; `/wlpaths tracker` turns its one-line tracker on / off.
+`/wlp` (also `/bots`, `/wlplayer`) toggles the panel. Sub-commands: `reset` (recenter panel + button), `show` / `hide`, `debug` (module load status).
 
 ---
 
